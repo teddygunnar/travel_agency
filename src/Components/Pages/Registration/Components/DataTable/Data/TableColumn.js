@@ -1,0 +1,73 @@
+const columns = [
+  {
+    name: "No.",
+    selector: "no",
+    center: true,
+    sortable: true,
+    compact: true,
+    width: "50px",
+  },
+  {
+    name: "Customer ID",
+    selector: "customerId",
+    center: true,
+    sortable: true,
+    compact: true,
+    width: "150px",
+  },
+  {
+    name: "Customer Name",
+    selector: "customerName",
+    center: true,
+    sortable: true,
+    compact: true,
+    width: "150px",
+  },
+  {
+    name: "PO Date",
+    selector: "poDate",
+    center: true,
+    sortable: true,
+    compact: true,
+    width: "100px",
+  },
+  {
+    name: "Branch ID",
+    selector: "branchId",
+    center: true,
+    sortable: true,
+    compact: true,
+    width: "85px",
+  },
+  {
+    name: "Passanger ID",
+    selector: "passangerId",
+    sortable: true,
+    wrap: true,
+    width: "150px",
+  },
+  {
+    name: "Passanger Bank",
+    selector: "passangerBank",
+    center: true,
+    sortable: true,
+    compact: true,
+    width: "250px",
+  },
+  {
+    name: "Passanger Bank Branch",
+    selector: "passangerBankBranch",
+    center: true,
+    sortable: true,
+    width: "125px",
+  },
+  {
+    name: "Created",
+    selector: "created",
+    center: true,
+    sortable: true,
+    width: "85px",
+  },
+];
+
+export default columns;
