@@ -14,14 +14,14 @@ export const fetchTableList = (user, session, page) => async () => {
       FILTER_VALUE: "",
       PAGE_NO: page,
       PAGE_ROW: "10",
+      ROW_ID: "",
     },
   };
   try {
     const {
       data: { rsList },
     } = await api.TableData(body);
-    return Array.from(rsList);
-
+    return rsList;
     // dispatch({ type: "FETCH_TABLE", payload: dataList });
   } catch (error) {
     console.log(error);

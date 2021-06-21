@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { Stepper, Step, StepLabel, Typography } from "@material-ui/core";
-import { useForm } from "react-hooks-helper";
 import useStlyes from "./styles";
-
 import InputPOForm from "./Forms/InputPOForm";
 import FormInformasiCustomer from "./Forms/FormInformasiCustomer";
 import FormJamaah from "./Forms/FormJamaah";
 import FormPencairan from "./Forms/FormPencairan";
+import UploadLampiran from "./Forms/UploadLampiran";
 import Review from "./Forms/Review";
 
 const steps = [
-  "Input PO",
+  "Informasi PO",
   "Informasi Customer",
-  "Jamaah/Penumpang",
-  "Pencairan",
+  "Informasi Penumpang",
+  "Informasi Pencairan",
+  "Upload Lampiran",
 ];
 
 const defaultData = {
@@ -43,12 +43,10 @@ const FormTable = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [formData, setForm] = useState(defaultData);
 
-  const [data, setData] = useState([]);
-
   const next = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
   const back = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
 
-  const props = { formData, setForm, next, back, data, setData };
+  const props = { formData, setForm, next, back };
   return (
     <div>
       <div className={classes.toolbar} />
@@ -67,6 +65,7 @@ const FormTable = () => {
         {activeStep === 1 ? <FormInformasiCustomer {...props} /> : null}
         {activeStep === 2 ? <FormJamaah {...props} /> : null}
         {activeStep === 3 ? <FormPencairan {...props} /> : null}
+        {activeStep === 4 ? <UploadLampiran {...props} /> : null}
         {activeStep === steps.length ? <Review {...props} /> : null}
       </main>
     </div>

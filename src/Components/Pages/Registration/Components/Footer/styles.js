@@ -14,6 +14,10 @@ export default makeStyles((theme) => ({
     borderRadius: 50,
     color: "white",
     textTransform: "none",
+    textDecoration: "none",
+    "&:hover": {
+      color: "white",
+    },
   },
   menuFooterMore: {
     paddingRight: 25,

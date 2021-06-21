@@ -17,16 +17,18 @@ export const addData =
     batch,
     nikPenumpang,
     namaPenumpang,
-    bank
+    noRek,
+    bank,
+    bankCabang
   ) =>
-  async (dispatch) => {
+  async () => {
     const body = {
       rqAdd: {
         COMPANY_ID: "PERTIWI",
         SITE_ID: "JKT",
         USER_ID: user,
         SESSION_LOGIN_ID: session,
-        ROW_ID: "0",
+        ROW_ID: "",
         APPLICATION_ID: aplikasiNo,
         PO_ID: nomorPo,
         PO_DATE: tglPo,
@@ -42,9 +44,9 @@ export const addData =
         PENCAIRAN_BATCH_ID: batch,
         PASSANGER_ID: nikPenumpang,
         PASSANGER_NAME: namaPenumpang,
-        PASSANGER_BANK_NO: "7153230287",
+        PASSANGER_BANK_NO: noRek,
         PASSANGER_BANK_NAME: bank,
-        PASSANGER_BANK_BRANCH: "SURABAYA",
+        PASSANGER_BANK_BRANCH: bankCabang,
       },
     };
 
@@ -55,9 +57,9 @@ export const addData =
       let message = response.data.rsAdd.RESULT_MESSAGE;
 
       if (RESULT_CODE === "01") {
-        console.log(message);
+        alert("Successfully submitted");
       } else {
-        console.log(message);
+        alert(message);
       }
     } catch (error) {
       console.log(error);

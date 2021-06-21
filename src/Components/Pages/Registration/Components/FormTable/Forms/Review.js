@@ -2,12 +2,11 @@ import React from "react";
 import { Typography, Button, Container } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { addData } from "../../../../../../redux/actions/register";
-import { useHistory } from "react-router-dom";
 
-const Review = ({ formData, setForm, back, data, setData }) => {
+const Review = ({ formData, back }) => {
   const dispatch = useDispatch();
 
-  const history = useHistory();
+  // const history = useHistory();
 
   const {
     aplikasiNo,
@@ -23,7 +22,9 @@ const Review = ({ formData, setForm, back, data, setData }) => {
     batch,
     nikPenumpang,
     namaPenumpang,
+    noRek,
     bank,
+    bankCabang,
   } = formData;
 
   const handleSubmit = () => {
@@ -45,10 +46,11 @@ const Review = ({ formData, setForm, back, data, setData }) => {
         batch,
         nikPenumpang,
         namaPenumpang,
-        bank
+        noRek,
+        bank,
+        bankCabang
       )
     );
-    history.push("/");
   };
   return (
     <Container maxWidth="sm">
@@ -62,11 +64,11 @@ const Review = ({ formData, setForm, back, data, setData }) => {
           marginTop: "1rem",
         }}
       >
-        <Button color="primary" variant="contained" onClick={back}>
-          back
+        <Button color="secondary" variant="outlined" onClick={back}>
+          No
         </Button>
-        <Button color="primary" variant="contained" onClick={handleSubmit}>
-          Save
+        <Button color="primary" variant="outlined" onClick={handleSubmit}>
+          Yes
         </Button>
       </div>
     </Container>

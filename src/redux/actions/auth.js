@@ -54,8 +54,6 @@ export const auth = (username, password) => async (dispatch) => {
       alert("login failed");
     }
     // dispatch({ type: ActionType.LOADING, loading: false });
-
-    console.log(userLogin);
   } catch (error) {
     console.log(error);
   }

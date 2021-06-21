@@ -39,8 +39,6 @@ const App = () => {
       setIsAuth(null);
     }
     // dispatch({ type: ActionType.LOADING, loading: false });
-
-    console.log(userLogin);
   };
 
   return !isAuth ? (

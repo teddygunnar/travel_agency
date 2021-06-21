@@ -1,13 +1,13 @@
 import * as api from "../../api";
 
-export const fetchBranchList = (user, session) => async () => {
+export const fetchCustomerList = (user, session) => async () => {
   const body = {
     rqList: {
       COMPANY_ID: "PERTIWI",
       SITE_ID: "JKT",
       USER_ID: user,
       SESSION_LOGIN_ID: session,
-      MASTER_GROUP_ID: "BRANCH_ID",
+      MASTER_GROUP_ID: "BANK_ID",
     },
   };
   try {
@@ -15,7 +15,8 @@ export const fetchBranchList = (user, session) => async () => {
       data: {
         rsList: { DATA },
       },
-    } = await api.BranchList(body);
+    } = await api.getCustomerList(body);
+    console.log(DATA);
 
     return DATA;
 

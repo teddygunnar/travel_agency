@@ -13,6 +13,8 @@ import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import styles from "./Navbar.module.css";
 import useStyles from "./styles";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const Navbar = ({ setIsAuth }) => {
   const [useranchorel, setuseranchorel] = useState(null);
@@ -35,15 +37,22 @@ const Navbar = ({ setIsAuth }) => {
     setMenuAnchorEl(event.currentTarget);
   };
 
-  const handleCloseMenu = (e) => {
-    setMenuAnchorEl(null);
-  };
+  // const handleCloseMenu = (e) => {
+  //   setMenuAnchorEl(null);
+  // };
+
+  const MySwal = withReactContent(Swal);
 
   //LOGOUT function
   const logout = () => {
     localStorage.clear();
+    handleCloseUser();
     setIsAuth(null);
     setUser(null);
+    MySwal.fire({
+      title: <p>You're logged out now!</p>,
+      footer: "Thanks for coming!",
+    });
   };
 
   return (

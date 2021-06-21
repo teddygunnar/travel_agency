@@ -6,7 +6,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import TreeItem from "@material-ui/lab/TreeItem";
 
-const Sidebar = ({ addRegisterTab }) => {
+const Sidebar = ({ addRegisterTab, goToTab }) => {
   return (
     <Paper className={styles.sidebarContainer}>
       <TreeView
@@ -19,6 +19,7 @@ const Sidebar = ({ addRegisterTab }) => {
             label="Form Registrasi"
             onClick={addRegisterTab}
           />
+          <TreeItem nodeId="3" label="go to register tab" onClick={goToTab} />
         </TreeItem>
       </TreeView>
     </Paper>

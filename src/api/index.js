@@ -17,3 +17,8 @@ export const BankList = (body) => request.post("/TRAVEL/m_global", body);
 export const BatchList = (body) => request.post("/TRAVEL/m_global", body);
 
 export const addNewData = (body) => request.post("/TRAVEL/po", body);
+
+export const deleteData = (body) => request.post("/TRAVEL/po", body);
+
+export const getCustomerList = (body) =>
+  request.post("/TRAVEL/m_customer", body);

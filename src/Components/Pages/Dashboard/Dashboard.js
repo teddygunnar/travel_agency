@@ -19,18 +19,14 @@ const Dashboard = ({ setIsAuth }) => {
   const tabs = useState(defaultTabs);
   const activeTab = useState(0);
 
+  const x = tabs.find((data) => data);
+  console.log(x[0]);
+  console.log(activeTab);
+
   //Add Tab to their respective page
   const addTab = () => {
     activeTab[1](tabs[0].length);
-    tabs[1]([
-      ...tabs[0],
-      {
-        title: "Dashboard",
-        url: "stackoverflow.com",
-        id: "tab0",
-        content: () => <h1>Dashboard</h1>,
-      },
-    ]);
+    tabs[1]([...tabs[0], defaultTabs[0]]);
   };
 
   const addRegisterTab = () => {
@@ -46,13 +42,17 @@ const Dashboard = ({ setIsAuth }) => {
     ]);
   };
 
+  const goToTab = () => {
+    activeTab[1](tabs[1].length);
+  };
+
   return (
     <div className={styles.dashboard}>
       <Navbar setIsAuth={setIsAuth} />
       <Grow in>
         <div className={styles.dashboardMainContainer}>
           <div className={styles.sideBarContainer}>
-            <Sidebar addRegisterTab={addRegisterTab} />
+            <Sidebar addRegisterTab={addRegisterTab} goToTab={goToTab} />
           </div>
           <div className={styles.dashboardMainContent}>
             <BrowserTabs

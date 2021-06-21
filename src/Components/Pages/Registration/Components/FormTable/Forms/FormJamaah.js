@@ -9,6 +9,8 @@ const FormJamaah = ({ formData, setForm, next, back }) => {
   const { nikPenumpang, namaPenumpang, noRek, bank, bankCabang } = formData;
   const [listBank, setListBank] = useState([]);
 
+  console.log(formData);
+
   const options = [
     { key: 1, text: "test1", value: "A" },
     { key: 2, text: "test2", value: "B" },
@@ -44,90 +46,101 @@ const FormJamaah = ({ formData, setForm, next, back }) => {
     return array;
   };
 
+  const handleChange = (e) => {
+    setForm({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!bank) {
+      alert("Please choose your bank.");
+    } else {
+      next();
+    }
+  };
+
   return (
     <Container maxWidth="sm">
-      <Typography variant="h6">Input Informasi Penumpang</Typography>
-      <TextField
-        label="NIK"
-        name="nikPenumpang"
-        value={nikPenumpang}
-        onChange={(e) =>
-          setForm({ ...formData, [e.target.name]: e.target.value })
-        }
-        autoComplete="off"
-        variant="outlined"
-        margin="normal"
-        fullWidth
-      />
-      <TextField
-        label="Nama Penumpang"
-        name="namaPenumpang"
-        value={namaPenumpang}
-        onChange={(e) =>
-          setForm({ ...formData, [e.target.name]: e.target.value })
-        }
-        autoComplete="off"
-        variant="outlined"
-        margin="normal"
-        fullWidth
-      />
-      <TextField
-        label="No. Rek"
-        name="noRek"
-        value={noRek}
-        onChange={(e) =>
-          setForm({ ...formData, [e.target.name]: e.target.value })
-        }
-        autoComplete="off"
-        variant="outlined"
-        margin="normal"
-        fullWidth
-      />
+      <form onSubmit={handleSubmit}>
+        <Typography variant="h6">Input Informasi Penumpang</Typography>
+        <TextField
+          label="NIK"
+          name="nikPenumpang"
+          value={nikPenumpang}
+          onChange={handleChange}
+          autoComplete="off"
+          required
+          variant="outlined"
+          margin="normal"
+          fullWidth
+        />
+        <TextField
+          label="Nama Penumpang"
+          name="namaPenumpang"
+          value={namaPenumpang}
+          onChange={handleChange}
+          autoComplete="off"
+          required
+          variant="outlined"
+          margin="normal"
+          fullWidth
+        />
+        <TextField
+          label="No. Rek"
+          name="noRek"
+          value={noRek}
+          onChange={handleChange}
+          autoComplete="off"
+          variant="outlined"
+          required
+          margin="normal"
+          fullWidth
+        />
 
-      <Dropdown
-        name="bank"
-        clearable
-        search
-        selection
-        fluid
-        options={bankList()}
-        placeholder="Pilih Bank"
-        value={bank}
-        onChange={(e, data) =>
-          setForm({ ...formData, [data.name]: data.value })
-        }
-        style={{ margin: "1.5rem 0" }}
-      />
-      <Dropdown
-        name="bankCabang"
-        clearable
-        search
-        selection
-        fluid
-        options={options}
-        placeholder="Pilih Bank Cabang"
-        value={bankCabang}
-        onChange={(e, data) =>
-          setForm({ ...formData, [data.name]: data.value })
-        }
-      />
+        <Dropdown
+          name="bank"
+          clearable
+          search
+          selection
+          fluid
+          options={bankList()}
+          placeholder="Pilih Bank"
+          value={bank}
+          onChange={(e, data) =>
+            setForm({ ...formData, [data.name]: data.value })
+          }
+          style={{ height: 50 }}
+        />
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          marginTop: "1rem",
-        }}
-      >
-        <Button color="primary" variant="contained" fullWidth onClick={back}>
-          back
-        </Button>
-        <div style={{ width: 50 }} />
-        <Button color="primary" variant="contained" fullWidth onClick={next}>
-          Next
-        </Button>
-      </div>
+        <TextField
+          label="Bank Cabang"
+          name="bankCabang"
+          value={bankCabang}
+          onChange={handleChange}
+          autoComplete="off"
+          variant="outlined"
+          required
+          margin="normal"
+          fullWidth
+        />
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            marginTop: "1rem",
+          }}
+        >
+          <Button color="secondary" variant="outlined" fullWidth onClick={back}>
+            back
+          </Button>
+          <div style={{ width: 50 }} />
+          <Button color="primary" variant="outlined" fullWidth type="submit">
+            Next
+          </Button>
+        </div>
+      </form>
     </Container>
   );
 };

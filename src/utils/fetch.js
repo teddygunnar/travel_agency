@@ -28,4 +28,8 @@ const post = async (endpoint, body) => {
   });
 };
 
-export default { post };
+const logger = {
+  post,
+};
+
+export default logger;

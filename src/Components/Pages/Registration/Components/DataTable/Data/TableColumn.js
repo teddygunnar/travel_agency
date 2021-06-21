@@ -1,4 +1,8 @@
-const columns = [
+import React from "react";
+import { IconButton, Modal } from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
+
+export const columns = [
   {
     name: "No.",
     selector: "no",
@@ -6,6 +10,23 @@ const columns = [
     sortable: true,
     compact: true,
     width: "50px",
+  },
+  {
+    name: "Row ID",
+    selector: "rowId",
+    center: true,
+    omit: true,
+    sortable: true,
+    compact: true,
+    width: "150px",
+  },
+  {
+    name: "PO ID",
+    selector: "poId",
+    center: true,
+    sortable: true,
+    compact: true,
+    width: "150px",
   },
   {
     name: "Customer ID",
@@ -68,6 +89,24 @@ const columns = [
     sortable: true,
     width: "85px",
   },
+  {
+    name: "Row ID",
+    selector: "rowId",
+    center: true,
+    omit: true,
+    sortable: true,
+    compact: true,
+    width: "150px",
+  },
+  {
+    cell: (row) => (
+      <IconButton
+        aria-label="edit"
+        color="secondary"
+        onClick={() => console.log(row)}
+      >
+        <EditIcon />
+      </IconButton>
+    ),
+  },
 ];
-
-export default columns;

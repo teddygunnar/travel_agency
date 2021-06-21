@@ -8,7 +8,7 @@ import MoreHoriz from "@material-ui/icons/MoreHoriz";
 import useStyles from "./styles";
 import { Link } from "react-router-dom";
 
-const Footer = () => {
+const Footer = ({ deleteData }) => {
   const classes = useStyles();
   return (
     <div className={classes.menuFooter}>
