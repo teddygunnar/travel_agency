@@ -92,7 +92,6 @@ const InputPOForm = ({ formData, setForm, next }) => {
           label="Aplikasi NO"
           name="aplikasiNo"
           required
-          isRequired="true"
           value={aplikasiNo}
           onChange={handleChange}
           autoComplete="off"
