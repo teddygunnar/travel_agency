@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo } from "react";
 import DataTable from "react-data-table-component";
-import { columns } from "./Data/TableColumn";
 import CustomTableStyle from "./TableStyles/CustomTableStyle";
 import CustomRowBackColor from "./TableStyles/CustomRowBackColor";
-import { Checkbox, Button } from "@material-ui/core";
+import { Checkbox, Button, IconButton } from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
+import EditModal from "./TableEditModal";
 import { TableHeader, Footer } from "../";
 import useStyles from "./styles";
 import { useDispatch } from "react-redux";
@@ -14,11 +15,14 @@ import { deleteDataList } from "../../../../../redux/actions/delete";
 const Table = () => {
   let [page, setPage] = useState(1);
   const [fetchedData, setFetchedData] = useState([]);
-
+  const [toggleModal, setToggleModal] = useState(false);
   const [selectedRowsData, setSelectedRowsData] = useState([]);
+  const [editData, setEditData] = useState([]);
 
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  const props = { toggleModal, setToggleModal, editData, setEditData };
 
   const checkBoxProps = {
     color: "primary",
@@ -55,6 +59,15 @@ const Table = () => {
 
   console.log(fetchedData);
 
+  const handleEdit = (row) => {
+    setToggleModal(true);
+    const findRow = fetchedData.find((data) => data.ROW_ID === row.rowId);
+    setEditData(findRow);
+  };
+
+  //REACT-DATA-TABLE-COMPONENT THING
+  //DON'T MESS IT UP
+
   const data = useMemo(() => {
     return [
       ...fetchedData.map((val, i) => ({
@@ -73,6 +86,121 @@ const Table = () => {
     ];
   }, [fetchedData]);
 
+  const columns = useMemo(
+    () => [
+      {
+        name: "No.",
+        selector: "no",
+        center: true,
+        sortable: true,
+        compact: true,
+        width: "50px",
+      },
+      {
+        name: "Row ID",
+        selector: "rowId",
+        center: true,
+        omit: true,
+        sortable: true,
+        compact: true,
+        width: "150px",
+      },
+      {
+        name: "PO ID",
+        selector: "poId",
+        center: true,
+        sortable: true,
+        compact: true,
+        width: "150px",
+      },
+      {
+        name: "Customer ID",
+        selector: "customerId",
+        center: true,
+        sortable: true,
+        compact: true,
+        width: "150px",
+      },
+      {
+        name: "Customer Name",
+        selector: "customerName",
+        center: true,
+        sortable: true,
+        compact: true,
+        width: "150px",
+      },
+      {
+        name: "PO Date",
+        selector: "poDate",
+        center: true,
+        sortable: true,
+        compact: true,
+        width: "100px",
+      },
+      {
+        name: "Branch ID",
+        selector: "branchId",
+        center: true,
+        sortable: true,
+        compact: true,
+        width: "85px",
+      },
+      {
+        name: "Passanger ID",
+        selector: "passangerId",
+        sortable: true,
+        wrap: true,
+        width: "150px",
+      },
+      {
+        name: "Passanger Bank",
+        selector: "passangerBank",
+        center: true,
+        sortable: true,
+        compact: true,
+        width: "250px",
+      },
+      {
+        name: "Passanger Bank Branch",
+        selector: "passangerBankBranch",
+        center: true,
+        sortable: true,
+        width: "125px",
+      },
+      {
+        name: "Created",
+        selector: "created",
+        center: true,
+        sortable: true,
+        width: "85px",
+      },
+      {
+        name: "Row ID",
+        selector: "rowId",
+        center: true,
+        omit: true,
+        sortable: true,
+        compact: true,
+        width: "150px",
+      },
+      {
+        cell: (row) => (
+          <IconButton
+            aria-label="edit"
+            color="secondary"
+            id={row.no}
+            onClick={() => handleEdit(row)}
+          >
+            <EditIcon />
+          </IconButton>
+        ),
+        center: true,
+        compact: true,
+      },
+    ],
+    [fetchedData]
+  );
+  //#############################################
   const handleChange = (state) => {
     setSelectedRowsData(state.selectedRows);
   };
@@ -107,6 +235,7 @@ const Table = () => {
   return (
     <div>
       <TableHeader />
+      <EditModal {...props} />
       <div>
         <div>
           <DataTable

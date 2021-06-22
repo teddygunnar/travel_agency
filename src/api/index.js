@@ -20,5 +20,7 @@ export const addNewData = (body) => request.post("/TRAVEL/po", body);
 
 export const deleteData = (body) => request.post("/TRAVEL/po", body);
 
+export const editData = (body) => request.post("/TRAVEL/po", body);
+
 export const getCustomerList = (body) =>
   request.post("/TRAVEL/m_customer", body);
