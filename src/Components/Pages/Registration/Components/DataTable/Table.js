@@ -218,6 +218,7 @@ const Table = () => {
             )
           )
         );
+        window.location.reload();
       } else {
         console.log("you cancel the delete");
       }

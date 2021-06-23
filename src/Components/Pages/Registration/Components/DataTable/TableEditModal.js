@@ -183,6 +183,7 @@ const EditModal = ({ toggleModal, setToggleModal, editData, setEditData }) => {
         )
       );
       setToggleModal(false);
+      window.location.reload();
     } else {
       console.log("maybe later");
     }
