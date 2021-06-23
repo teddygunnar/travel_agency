@@ -61,6 +61,7 @@ export const addData =
       } else {
         alert(message);
       }
+      return RESULT_CODE;
     } catch (error) {
       console.log(error);
     }

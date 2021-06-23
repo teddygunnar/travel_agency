@@ -55,9 +55,7 @@ const Table = () => {
       );
     };
     fetchAPI();
-  }, [page, dispatch]);
-
-  console.log(fetchedData);
+  }, [page, dispatch, deleteDataList]);
 
   const handleEdit = (row) => {
     setToggleModal(true);
@@ -198,20 +196,18 @@ const Table = () => {
         compact: true,
       },
     ],
-    [fetchedData]
+    [handleEdit]
   );
   //#############################################
   const handleChange = (state) => {
     setSelectedRowsData(state.selectedRows);
   };
 
-  console.log(selectedRowsData);
-
   const contextActions = useMemo(() => {
     const handleDelete = () => {
       if (!selectedRowsData.length) {
         console.log("there is no data in your state");
-      } else {
+      } else if (window.confirm("Are you sure you want to delete?")) {
         selectedRowsData.map((val) =>
           dispatch(
             deleteDataList(
@@ -222,6 +218,8 @@ const Table = () => {
             )
           )
         );
+      } else {
+        console.log("you cancel the delete");
       }
     };
 

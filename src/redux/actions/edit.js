@@ -52,7 +52,9 @@ export const editDataList =
     };
 
     try {
-      const response = await api.editDataList(body);
+      const { data } = await api.editData(body);
+
+      console.log(data);
     } catch (error) {
       console.log(error);
     }

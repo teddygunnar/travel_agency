@@ -1,16 +1,14 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import {
-  Modal,
-  TextField,
-  Container,
-  Typography,
-  Grid,
-} from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { Modal, Container, Typography, Grid, Button } from "@material-ui/core";
 import { Dropdown } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import { useDispatch } from "react-redux";
 import { fetchBranchList } from "../../../../../redux/actions/getBranchList";
+import { fetchBankList } from "../../../../../redux/actions/getBankList";
+import { fetchBatchList } from "../../../../../redux/actions/getBatchList";
+import { editDataList } from "../../../../../redux/actions/edit";
+import useStyles from "./styles";
+import FormInput from "./CustomTextField";
 
 function getModalStyle() {
   const top = 50;
@@ -23,30 +21,19 @@ function getModalStyle() {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    position: "absolute",
-    width: 600,
-    height: 500,
-    borderRadius: 10,
-    overflow: "scroll",
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(2, 4, 3),
-  },
-}));
-
 const EditModal = ({ toggleModal, setToggleModal, editData, setEditData }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [modalStyle] = useState(getModalStyle);
 
-  const handleClose = () => {
-    if (window.confirm("Are you sure you want to exit?")) {
-      setToggleModal(false);
-      console.log("exit");
-    } else {
-      console.log("not exit");
-    }
-  };
+  const [branchDetail, setBranchDetail] = useState({
+    BRANCH_NAME: "",
+    AREA: "",
+    FINANCE: "",
+  });
+  const [branch, setBranch] = useState([]);
+  const [listBank, setListBank] = useState([]);
+  const [listBatch, setListBatch] = useState([]);
 
   const {
     ROW_ID,
@@ -68,11 +55,146 @@ const EditModal = ({ toggleModal, setToggleModal, editData, setEditData }) => {
     PASSANGER_BANK_BRANCH,
   } = editData;
 
-  console.log(editData);
-  console.log(editData.APPLICATION_ID);
+  useEffect(() => {
+    const fetchAPI = async () => {
+      setBranch(
+        await dispatch(
+          fetchBranchList(
+            localStorage.getItem("userId"),
+            localStorage.getItem("auth")
+          )
+        )
+      );
+    };
+    fetchAPI();
+  }, [dispatch]);
 
-  const handleChange = (e) => {
-    setEditData({ ...editData, [e.target.name]: e.target.value });
+  useEffect(() => {
+    const fetchAPI = async () => {
+      setListBank(
+        await dispatch(
+          fetchBankList(
+            localStorage.getItem("userId"),
+            localStorage.getItem("auth")
+          )
+        )
+      );
+    };
+    fetchAPI();
+  }, [dispatch]);
+
+  useEffect(() => {
+    const fetchAPI = async () => {
+      setListBatch(
+        await dispatch(
+          fetchBatchList(
+            localStorage.getItem("userId"),
+            localStorage.getItem("auth")
+          )
+        )
+      );
+    };
+    fetchAPI();
+  }, [dispatch]);
+
+  useEffect(() => {
+    const getBranchInfo = branch.find((data) => data.BRANCH_ID === BRANCH_ID);
+
+    if (!BRANCH_ID) {
+      setBranchDetail({
+        ...branchDetail,
+        BRANCH_NAME: "",
+        AREA: "",
+        FINANCE: "",
+      });
+    } else {
+      setBranchDetail({
+        ...branchDetail,
+        BRANCH_NAME: getBranchInfo?.BRANCH_NAME,
+        AREA: getBranchInfo?.LEASING_CITY_ID,
+        FINANCE: getBranchInfo?.LEASING_ACQUISITION_ID,
+      });
+    }
+  }, [BRANCH_ID]);
+
+  const branchList = () => {
+    let array = [];
+
+    branch.map((val, i) =>
+      array.push({
+        key: i,
+        text: val.AREA_ID,
+        value: val.BRANCH_ID,
+      })
+    );
+    return array;
+  };
+
+  const bankList = () => {
+    let array = [];
+
+    listBank.map((val, i) =>
+      array.push({
+        key: i,
+        text: val.MASTER_NAME,
+        value: val.MASTER_ID,
+      })
+    );
+    return array;
+  };
+
+  const batchList = () => {
+    let array = [];
+
+    listBatch.map((val, i) =>
+      array.push({
+        key: i,
+        text: val.MASTER_NAME,
+        value: val.MASTER_ID,
+      })
+    );
+    return array;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (window.confirm("Are you sure you want to submit changes?")) {
+      dispatch(
+        editDataList(
+          localStorage.getItem("userId"),
+          localStorage.getItem("session"),
+          ROW_ID,
+          APPLICATION_ID,
+          PO_ID,
+          PO_DATE,
+          BRANCH_ID,
+          CUSTOMER_ID,
+          CUSTOMER_NAME,
+          BRUTO_VAL,
+          DOWN_PAYMENT_VAL,
+          NETTO_VAL,
+          PENCAIRAN_DATE,
+          PENCAIRAN_BATCH_ID,
+          PASSANGER_ID,
+          PASSANGER_NAME,
+          PASSANGER_BANK_NO,
+          PASSANGER_BANK_NAME,
+          PASSANGER_BANK_BRANCH
+        )
+      );
+      setToggleModal(false);
+    } else {
+      console.log("maybe later");
+    }
+  };
+
+  const handleClose = () => {
+    if (window.confirm("Are you sure you want to exit?")) {
+      setToggleModal(false);
+      console.log("exit");
+    } else {
+      console.log("not exit");
+    }
   };
 
   const body = (
@@ -88,49 +210,37 @@ const EditModal = ({ toggleModal, setToggleModal, editData, setEditData }) => {
           Edit Data
         </Typography>
       </div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div>
           <Typography variant="h5" gutterBottom>
             Input PO
           </Typography>
           <Grid container spacing={3} style={{ marginBottom: 15 }}>
-            <Grid item xs={6}>
-              <TextField
-                required
-                fullWidth
-                label="Aplikasi NO"
-                name="APPLICATION_ID"
-                variant="outlined"
-                value={APPLICATION_ID}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                required
-                fullWidth
-                label="Nomor PO"
-                name="PO_ID"
-                variant="outlined"
-                value={PO_ID}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                type="date"
-                label="Tanggal PO"
-                name="PO_DATE"
-                variant="outlined"
-                value={PO_DATE}
-                onChange={handleChange}
-                fullWidth
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Grid>
+            <FormInput
+              name="APPLICATION_ID"
+              label="Aplikasi NO"
+              value={APPLICATION_ID}
+              editData={editData}
+              setEditData={setEditData}
+            />
+            <FormInput
+              name="PO_ID"
+              label="Nomor PO"
+              value={PO_ID}
+              disabled={true}
+              editData={editData}
+              setEditData={setEditData}
+            />
+            <FormInput
+              type="date"
+              label="Tanggal PO"
+              name="PO_DATE"
+              value={PO_DATE}
+              editData={editData}
+              setEditData={setEditData}
+              shrink={true}
+              size={12}
+            />
           </Grid>
         </div>
 
@@ -139,43 +249,190 @@ const EditModal = ({ toggleModal, setToggleModal, editData, setEditData }) => {
             Nilai PO
           </Typography>
           <Grid container spacing={3} style={{ marginBottom: 15 }}>
-            <Grid item xs={6}>
-              <TextField
-                required
-                fullWidth
-                type="number"
-                label="Harga PO"
-                name="BRUTO_VAL"
-                variant="outlined"
-                value={BRUTO_VAL}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                required
-                fullWidth
-                type="number"
-                label="Uang Muka"
-                name="DOWN_PAYMENT_VAL"
-                variant="outlined"
-                value={DOWN_PAYMENT_VAL}
-                onChange={handleChange}
-              />
-            </Grid>
+            <FormInput
+              name="BRUTO_VAL"
+              label="Harga PO"
+              type="number"
+              value={BRUTO_VAL}
+              editData={editData}
+              setEditData={setEditData}
+            />
+            <FormInput
+              name="DOWN_PAYMENT_VAL"
+              label="Uang Muka"
+              type="number"
+              value={DOWN_PAYMENT_VAL}
+              editData={editData}
+              setEditData={setEditData}
+            />
+            <FormInput
+              name="NETTO_VAL"
+              value={NETTO_VAL}
+              label="Dana Titipan"
+              type="number"
+              size={12}
+              editData={editData}
+              setEditData={setEditData}
+            />
+          </Grid>
+        </div>
+
+        <div>
+          <Typography variant="h5" gutterBottom>
+            Cabang
+          </Typography>
+          <Grid container spacing={3} style={{ marginBottom: 15 }}>
             <Grid item xs={12}>
-              <TextField
-                required
-                label="Dana Titipan"
-                name="NETTO_VAL"
-                variant="outlined"
-                value={NETTO_VAL}
-                onChange={handleChange}
-                fullWidth
-                type="number"
+              <Dropdown
+                name="BRANCH_ID"
+                clearable
+                search
+                selection
+                fluid
+                options={branchList()}
+                placeholder="Pilih Cabang"
+                value={BRANCH_ID}
+                onChange={(e, data) =>
+                  setEditData({ ...editData, [data.name]: data.value })
+                }
+              />
+            </Grid>
+            <FormInput
+              label="Nama Cabang"
+              name="BRANCH_NAME"
+              value={branchDetail.BRANCH_NAME}
+              disabled={true}
+              size={12}
+            />
+            <FormInput
+              label="Wilayah"
+              name="AREA"
+              value={branchDetail.AREA}
+              disabled={true}
+            />
+            <FormInput
+              label="Finance"
+              name="FINANCE"
+              value={branchDetail.FINANCE}
+              disabled={true}
+            />
+          </Grid>
+        </div>
+
+        <div>
+          <Typography variant="h5" gutterBottom>
+            Informasi Kustomer
+          </Typography>
+          <Grid container spacing={3} style={{ marginBottom: 15 }}>
+            <FormInput
+              label="NIK Kustomer"
+              name="CUSTOMER_ID"
+              value={CUSTOMER_ID}
+              editData={editData}
+              setEditData={setEditData}
+            />
+            <FormInput
+              label="Nama Kustomer"
+              name="CUSTOMER_NAME"
+              value={CUSTOMER_NAME}
+              editData={editData}
+              setEditData={setEditData}
+            />
+          </Grid>
+        </div>
+        <div>
+          <Typography variant="h5" gutterBottom>
+            Informasi Penumpang
+          </Typography>
+          <Grid container spacing={3} style={{ marginBottom: 15 }}>
+            <FormInput
+              label="NIK Penumpang"
+              name="PASSANGER_ID"
+              value={PASSANGER_ID}
+              editData={editData}
+              setEditData={setEditData}
+            />
+            <FormInput
+              label="Nama Penumpang"
+              name="PASSANGER_NAME"
+              value={PASSANGER_NAME}
+              editData={editData}
+              setEditData={setEditData}
+            />
+            <FormInput
+              label="No. Rek"
+              name="PASSANGER_BANK_NO"
+              value={PASSANGER_BANK_NO}
+              size={12}
+              editData={editData}
+              setEditData={setEditData}
+            />
+
+            <Grid item xs={12}>
+              <Dropdown
+                name="PASSANGER_BANK_NAME"
+                clearable
+                search
+                selection
+                fluid
+                options={bankList()}
+                placeholder="Pilih Bank"
+                value={PASSANGER_BANK_NAME}
+                onChange={(e, data) =>
+                  setEditData({ ...editData, [data.name]: data.value })
+                }
+              />
+            </Grid>
+            <FormInput
+              label="Bank Cabang"
+              name="PASSANGER_BANK_BRANCH"
+              value={PASSANGER_BANK_BRANCH}
+              editData={editData}
+              setEditData={setEditData}
+              size={12}
+            />
+          </Grid>
+        </div>
+
+        <div>
+          <Typography variant="h5" gutterBottom>
+            Informasi Pencairan
+          </Typography>
+          <Grid container spacing={3} style={{ marginBottom: 15 }}>
+            <FormInput
+              label="Tanggal Pencairan"
+              name="PENCAIRAN_DATE"
+              value={PENCAIRAN_DATE}
+              type="date"
+              shrink={true}
+              size={12}
+            />
+            <Grid item xs={12}>
+              <Dropdown
+                name="PENCAIRAN_BATCH_ID"
+                clearable
+                search
+                selection
+                fluid
+                options={batchList()}
+                placeholder="Pilih Batch"
+                value={PENCAIRAN_BATCH_ID}
+                checked={PENCAIRAN_BATCH_ID}
+                onChange={(e, data) =>
+                  setEditData({ ...editData, [data.name]: data.value })
+                }
+                style={{ marginTop: "1rem" }}
               />
             </Grid>
           </Grid>
+        </div>
+        <div className={classes.buttonBox}>
+          <Button onClick={handleClose} variant="contained" color="secondary">
+            Back
+          </Button>
+          <Button type="submit" variant="contained" color="primary">
+            Submit
+          </Button>
         </div>
       </form>
     </Container>

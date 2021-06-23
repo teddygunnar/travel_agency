@@ -45,4 +45,20 @@ export default makeStyles((theme) => ({
     alignItems: "center",
     flexDirection: "row",
   },
+
+  container: {
+    position: "absolute",
+    width: 600,
+    height: 500,
+    borderRadius: 10,
+    overflow: "scroll",
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(2, 4, 3),
+  },
+  buttonBox: {
+    display: "flex",
+    flexDirection: " row",
+    justifyContent: "space-between",
+    margin: "3rem 0",
+  },
 }));

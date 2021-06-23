@@ -8,10 +8,10 @@ const Dashboard = ({ setIsAuth }) => {
   //Default Tabs
   const defaultTabs = [
     {
-      title: "Dashboard",
+      title: "Registrasi",
       url: "stackoverflow.com",
       id: "tab0",
-      content: () => <h1>Dashboard</h1>,
+      content: () => <Registration />,
     },
   ];
 

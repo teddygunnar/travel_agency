@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Typography, Button, Container } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addData } from "../../../../../../redux/actions/register";
 
 const Review = ({ formData, back }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const [status, setStatus] = useState("00");
 
   // const history = useHistory();
 
@@ -27,31 +30,39 @@ const Review = ({ formData, back }) => {
     bankCabang,
   } = formData;
 
-  const handleSubmit = () => {
-    console.log({ ...formData });
-    dispatch(
-      addData(
-        localStorage.getItem("userId"),
-        localStorage.getItem("auth"),
-        aplikasiNo,
-        nomorPo,
-        tglPo,
-        cabang,
-        nikCustomer,
-        namaCustomer,
-        hargaPo,
-        uangMuka,
-        titipan,
-        tglPencairan,
-        batch,
-        nikPenumpang,
-        namaPenumpang,
-        noRek,
-        bank,
-        bankCabang
+  const handleSubmit = async () => {
+    setStatus(
+      await dispatch(
+        addData(
+          localStorage.getItem("userId"),
+          localStorage.getItem("auth"),
+          aplikasiNo,
+          nomorPo,
+          tglPo,
+          cabang,
+          nikCustomer,
+          namaCustomer,
+          hargaPo,
+          uangMuka,
+          titipan,
+          tglPencairan,
+          batch,
+          nikPenumpang,
+          namaPenumpang,
+          noRek,
+          bank,
+          bankCabang
+        )
       )
     );
   };
+
+  useEffect(() => {
+    if (status == "01") {
+      history.push("/");
+    }
+  }, [status]);
+
   return (
     <Container maxWidth="sm">
       <Typography variant="h6">Do you want to submit?</Typography>
