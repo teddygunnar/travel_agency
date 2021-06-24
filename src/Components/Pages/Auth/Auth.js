@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -21,17 +21,19 @@ const Login = ({ setLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setIsMessage] = useState("");
-
+  const [status, setStatus] = useState();
   const classes = useStyles();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (username && password) {
-      setLogin(username, password);
-    } else {
-      setIsMessage("Username atau Password tidak dapat ditemukan");
-    }
+    setStatus(await setLogin(username, password));
   };
+
+  useEffect(() => {
+    if (status === "00") {
+      setIsMessage("Username atau password salah");
+    }
+  }, [status]);
 
   //LOGIN INTERFACE
   return (
@@ -66,7 +68,7 @@ const Login = ({ setLogin }) => {
             control={<Phone fontSize="small" />}
             label={
               <span style={{ fontSize: "13px", paddingLeft: 5 }}>
-                08170066000
+                +62-21-5011-0110
               </span>
             }
           />

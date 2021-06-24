@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import DataTable from "react-data-table-component";
 import CustomTableStyle from "./TableStyles/CustomTableStyle";
 import CustomRowBackColor from "./TableStyles/CustomRowBackColor";
@@ -18,11 +18,17 @@ const Table = () => {
   const [toggleModal, setToggleModal] = useState(false);
   const [selectedRowsData, setSelectedRowsData] = useState([]);
   const [editData, setEditData] = useState([]);
-
+  const [render, setRender] = useState(false);
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const props = { toggleModal, setToggleModal, editData, setEditData };
+  const props = {
+    toggleModal,
+    setToggleModal,
+    editData,
+    setEditData,
+    setRender,
+  };
 
   const checkBoxProps = {
     color: "primary",
@@ -55,13 +61,17 @@ const Table = () => {
       );
     };
     fetchAPI();
-  }, [page, dispatch, deleteDataList]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [render, page, dispatch, deleteDataList]);
 
-  const handleEdit = (row) => {
-    setToggleModal(true);
-    const findRow = fetchedData.find((data) => data.ROW_ID === row.rowId);
-    setEditData(findRow);
-  };
+  const handleEdit = useCallback(
+    (row) => {
+      setToggleModal(true);
+      const findRow = fetchedData.find((data) => data.ROW_ID === row.rowId);
+      setEditData(findRow);
+    },
+    [fetchedData]
+  );
 
   //REACT-DATA-TABLE-COMPONENT THING
   //DON'T MESS IT UP
@@ -218,7 +228,7 @@ const Table = () => {
             )
           )
         );
-        window.location.reload();
+        setRender((prev) => !prev);
       } else {
         console.log("you cancel the delete");
       }

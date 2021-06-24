@@ -38,9 +38,6 @@ const InputPOForm = ({ formData, setForm, next }) => {
     fetchAPI();
   }, [dispatch]);
 
-  const getBranchInfo = branch.find((data) => data.BRANCH_ID === cabang);
-  console.log(getBranchInfo);
-
   useEffect(() => {
     const getBranchInfo = branch.find((data) => data.BRANCH_ID === cabang);
 
@@ -54,6 +51,7 @@ const InputPOForm = ({ formData, setForm, next }) => {
         finance: getBranchInfo?.LEASING_ACQUISITION_ID,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cabang]);
 
   const branchList = () => {
@@ -129,6 +127,7 @@ const InputPOForm = ({ formData, setForm, next }) => {
         <Typography variant="h5" gutterBottom style={{ marginTop: "2rem" }}>
           Nilai PO
         </Typography>
+
         <TextField
           required
           label="Harga PO"
@@ -139,6 +138,7 @@ const InputPOForm = ({ formData, setForm, next }) => {
           margin="normal"
           fullWidth
           type="number"
+          onWheel={(e) => e.target.blur()}
           autoComplete="off"
         />
         <TextField
@@ -149,6 +149,7 @@ const InputPOForm = ({ formData, setForm, next }) => {
           onChange={handleChange}
           autoComplete="off"
           type="number"
+          onWheel={(e) => e.target.blur()}
           variant="outlined"
           margin="normal"
           fullWidth
@@ -161,6 +162,7 @@ const InputPOForm = ({ formData, setForm, next }) => {
           onChange={handleChange}
           autoComplete="off"
           type="number"
+          onWheel={(e) => e.target.blur()}
           variant="outlined"
           margin="normal"
           fullWidth

@@ -21,7 +21,13 @@ function getModalStyle() {
   };
 }
 
-const EditModal = ({ toggleModal, setToggleModal, editData, setEditData }) => {
+const EditModal = ({
+  toggleModal,
+  setToggleModal,
+  editData,
+  setEditData,
+  setRender,
+}) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [modalStyle] = useState(getModalStyle);
@@ -115,6 +121,7 @@ const EditModal = ({ toggleModal, setToggleModal, editData, setEditData }) => {
         FINANCE: getBranchInfo?.LEASING_ACQUISITION_ID,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [BRANCH_ID]);
 
   const branchList = () => {
@@ -182,8 +189,8 @@ const EditModal = ({ toggleModal, setToggleModal, editData, setEditData }) => {
           PASSANGER_BANK_BRANCH
         )
       );
+      setRender((prev) => !prev);
       setToggleModal(false);
-      window.location.reload();
     } else {
       console.log("maybe later");
     }

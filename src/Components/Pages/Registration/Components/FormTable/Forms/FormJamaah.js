@@ -9,14 +9,6 @@ const FormJamaah = ({ formData, setForm, next, back }) => {
   const { nikPenumpang, namaPenumpang, noRek, bank, bankCabang } = formData;
   const [listBank, setListBank] = useState([]);
 
-  console.log(formData);
-
-  const options = [
-    { key: 1, text: "test1", value: "A" },
-    { key: 2, text: "test2", value: "B" },
-    { key: 3, text: "test3", value: "C" },
-  ];
-
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -35,6 +35,7 @@ export const auth = (username, password) => async (dispatch) => {
 
   try {
     const userLogin = await api.SignIn(body);
+    console.log(userLogin);
     let { RESULT_CODE } = userLogin.data.rsLogin;
     let SessionLogin =
       userLogin.data.rsLogin.SESSION_LOGIN_INFO[0].SESSION_LOGIN_ID;

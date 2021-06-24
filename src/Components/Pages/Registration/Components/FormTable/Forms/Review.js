@@ -30,7 +30,8 @@ const Review = ({ formData, back }) => {
     bankCabang,
   } = formData;
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setStatus(
       await dispatch(
         addData(
@@ -58,10 +59,10 @@ const Review = ({ formData, back }) => {
   };
 
   useEffect(() => {
-    if (status == "01") {
+    if (status === "01") {
       history.push("/");
     }
-  }, [status]);
+  }, [status, history]);
 
   return (
     <Container maxWidth="sm">

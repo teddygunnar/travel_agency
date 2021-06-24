@@ -33,15 +33,17 @@ const FormInformasiCustomer = ({ setForm, formData, back, next }) => {
     if (!value) {
       setValue({ label: nikCustomer, value: nikCustomer });
     }
-  }, []);
+  }, [value, nikCustomer]);
 
   //Change handler to send the value data to cabang's state both for input and selected value
   useEffect(() => {
     setForm({ ...formData, nikCustomer: value.title });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   useEffect(() => {
     setForm({ ...formData, nikCustomer: inputValue });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputValue]);
 
   //###############################
@@ -49,11 +51,12 @@ const FormInformasiCustomer = ({ setForm, formData, back, next }) => {
     const getCustName = customerList.find(
       (data) => data.CUSTOMER_ID === nikCustomer
     );
-    if (!nikCustomer || !value) {
+    if (!nikCustomer || null) {
       setForm({ ...formData, namaCustomer: "" });
     } else {
       setForm({ ...formData, namaCustomer: getCustName?.CUSTOMER_NAME });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, nikCustomer]);
 
   //Change handler for send data
@@ -88,6 +91,8 @@ const FormInformasiCustomer = ({ setForm, formData, back, next }) => {
     return array;
   };
 
+  console.log(customer());
+
   const handleSubmit = (e) => {
     e.preventDefault();
     next();
@@ -106,7 +111,7 @@ const FormInformasiCustomer = ({ setForm, formData, back, next }) => {
           onInputChange={handleInputChange}
           onChange={handleAutocompleteChange}
           getOptionLabel={(option) =>
-            value
+            value || ""
               ? option.value
                 ? option.value
                 : ""
@@ -132,7 +137,7 @@ const FormInformasiCustomer = ({ setForm, formData, back, next }) => {
           name="namaCustomer"
           required
           value={namaCustomer}
-          onChange={handleChange}
+          onChange={!value ? handleChange : ""}
           autoComplete="off"
           variant="outlined"
           margin="normal"

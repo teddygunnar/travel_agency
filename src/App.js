@@ -19,6 +19,7 @@ const App = () => {
       },
     };
     const userLogin = await SignIn(body);
+    console.log(userLogin);
     let { RESULT_CODE } = userLogin.data.rsLogin;
     let SessionLogin =
       userLogin.data.rsLogin.SESSION_LOGIN_INFO[0].SESSION_LOGIN_ID;
@@ -38,6 +39,8 @@ const App = () => {
     } else {
       setIsAuth(null);
     }
+
+    return RESULT_CODE;
     // dispatch({ type: ActionType.LOADING, loading: false });
   };
 

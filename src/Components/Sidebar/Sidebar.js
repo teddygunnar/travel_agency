@@ -13,13 +13,8 @@ const Sidebar = ({ addRegisterTab, goToTab }) => {
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
       >
-        <TreeItem nodeId="1" label="Register">
-          <TreeItem
-            nodeId="2"
-            label="Form Registrasi"
-            onClick={addRegisterTab}
-          />
-          <TreeItem nodeId="3" label="go to register tab" onClick={goToTab} />
+        <TreeItem nodeId="1" label="Menu">
+          <TreeItem nodeId="2" label="Registrasi" onClick={addRegisterTab} />
         </TreeItem>
       </TreeView>
     </Paper>
