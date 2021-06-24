@@ -38,9 +38,9 @@ const InputPOForm = ({ formData, setForm, next }) => {
     fetchAPI();
   }, [dispatch]);
 
-  useEffect(() => {
-    const getBranchInfo = branch.find((data) => data.BRANCH_ID === cabang);
+  const getBranchInfo = branch.find((data) => data.BRANCH_ID === cabang);
 
+  useEffect(() => {
     if (!cabang) {
       setForm({ ...formData, namaCabang: "", wilayah: "", finance: "" });
     } else {
@@ -53,6 +53,18 @@ const InputPOForm = ({ formData, setForm, next }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cabang]);
+
+  useEffect(() => {
+    if (cabang) {
+      setForm({
+        ...formData,
+        namaCabang: namaCabang ? namaCabang : getBranchInfo?.BRANCH_NAME,
+        wilayah: wilayah ? wilayah : getBranchInfo?.LEASING_CITY_ID,
+        finance: finance ? finance : getBranchInfo?.LEASING_ACQUISITION_ID,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [namaCabang, wilayah, finance]);
 
   const branchList = () => {
     let array = [];

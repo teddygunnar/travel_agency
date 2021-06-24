@@ -20,44 +20,50 @@ const FormInformasiCustomer = ({ setForm, formData, back, next }) => {
   const handleAutocompleteChange = (option, newValue) => {
     if (newValue) {
       setValue(newValue);
+      setForm({ ...formData, nikCustomer: newValue.value });
     } else {
       setValue("");
+      setForm({ ...formData, nikCustomer: "" });
     }
   };
+
+  const getCustName = customerList.find(
+    (data) => data.CUSTOMER_ID === nikCustomer
+  );
+
+  useEffect(() => {
+    if (nikCustomer || value) {
+      setValue({ label: nikCustomer, value: nikCustomer });
+      setForm({
+        ...formData,
+        namaCustomer: getCustName?.CUSTOMER_NAME,
+      });
+    } else {
+      setForm({ ...formData, namaCustomer: "" });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nikCustomer, namaCustomer]);
+
+  console.log(formData);
+
+  useEffect(() => {
+    if (nikCustomer) {
+      setForm({
+        ...formData,
+        namaCustomer: namaCustomer ? namaCustomer : getCustName?.CUSTOMER_NAME,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [namaCustomer]);
 
   const handleInputChange = (option, newValue) => {
-    newValue ? setInputValue(newValue) : setInputValue("");
-  };
-
-  useEffect(() => {
-    if (!value) {
-      setValue({ label: nikCustomer, value: nikCustomer });
-    }
-  }, [value, nikCustomer]);
-
-  //Change handler to send the value data to cabang's state both for input and selected value
-  useEffect(() => {
-    setForm({ ...formData, nikCustomer: value.title });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
-
-  useEffect(() => {
-    setForm({ ...formData, nikCustomer: inputValue });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inputValue]);
-
-  //###############################
-  useEffect(() => {
-    const getCustName = customerList.find(
-      (data) => data.CUSTOMER_ID === nikCustomer
-    );
-    if (!nikCustomer || null) {
-      setForm({ ...formData, namaCustomer: "" });
+    if (newValue) {
+      setInputValue(newValue);
+      setForm({ ...formData, nikCustomer: newValue });
     } else {
-      setForm({ ...formData, namaCustomer: getCustName?.CUSTOMER_NAME });
+      setInputValue(newValue);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value, nikCustomer]);
+  };
 
   //Change handler for send data
   const handleChange = (e) => {
@@ -91,8 +97,6 @@ const FormInformasiCustomer = ({ setForm, formData, back, next }) => {
     return array;
   };
 
-  console.log(customer());
-
   const handleSubmit = (e) => {
     e.preventDefault();
     next();
@@ -111,13 +115,14 @@ const FormInformasiCustomer = ({ setForm, formData, back, next }) => {
           onInputChange={handleInputChange}
           onChange={handleAutocompleteChange}
           getOptionLabel={(option) =>
-            value || ""
-              ? option.value
-                ? option.value
-                : ""
-              : option.label
-              ? option.label
-              : ""
+            // value || ""
+            //   ? option.value
+            //     ? option.value
+            //     : ""
+            //   : option.label
+            //   ? option.label
+            //   : ""
+            option ? option.label : ""
           }
           getOptionSelected={(option, selectedValue) =>
             option.value === selectedValue.value
@@ -137,7 +142,7 @@ const FormInformasiCustomer = ({ setForm, formData, back, next }) => {
           name="namaCustomer"
           required
           value={namaCustomer}
-          onChange={!value ? handleChange : ""}
+          onChange={inputValue ? handleChange : ""}
           autoComplete="off"
           variant="outlined"
           margin="normal"

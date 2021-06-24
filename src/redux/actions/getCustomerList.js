@@ -16,7 +16,6 @@ export const fetchCustomerList = (user, session) => async () => {
         rsList: { DATA },
       },
     } = await api.getCustomerList(body);
-    console.log(DATA);
 
     return DATA;
 

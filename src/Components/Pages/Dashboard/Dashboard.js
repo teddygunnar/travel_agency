@@ -19,10 +19,6 @@ const Dashboard = ({ setIsAuth }) => {
   const tabs = useState(defaultTabs);
   const activeTab = useState(0);
 
-  const x = tabs.find((data) => data);
-  console.log(x[0]);
-  console.log(activeTab);
-
   //Add Tab to their respective page
   const addTab = () => {
     activeTab[1](tabs[0].length);

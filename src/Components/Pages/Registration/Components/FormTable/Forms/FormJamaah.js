@@ -101,7 +101,6 @@ const FormJamaah = ({ formData, setForm, next, back }) => {
           onChange={(e, data) =>
             setForm({ ...formData, [data.name]: data.value })
           }
-          style={{ height: 50 }}
         />
 
         <TextField
