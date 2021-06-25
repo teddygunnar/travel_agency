@@ -8,13 +8,13 @@ import MoreHoriz from "@material-ui/icons/MoreHoriz";
 import useStyles from "./styles";
 import { Link } from "react-router-dom";
 
-const Footer = ({ deleteData }) => {
+const Footer = ({ handleCancelData, handleSubmitData }) => {
   const classes = useStyles();
   return (
     <div className={classes.menuFooter}>
       <Button
         component={Link}
-        to="/register/add-passenger"
+        to="/add-passenger"
         className={classes.menuFooterButton}
         variant="contained"
         startIcon={<Add fontSize="large" />}
@@ -37,6 +37,7 @@ const Footer = ({ deleteData }) => {
       <Button
         className={classes.menuFooterButton}
         variant="contained"
+        onClick={handleCancelData}
         style={{
           backgroundColor: "#F65A7A",
         }}
@@ -47,12 +48,13 @@ const Footer = ({ deleteData }) => {
       <Button
         className={classes.menuFooterButton}
         variant="contained"
+        onClick={handleSubmitData}
         style={{
           backgroundColor: "#00AF9E",
         }}
         startIcon={<Check fontSize="large" />}
       >
-        Closing
+        Approve
       </Button>
       <Button
         className={classes.menuFooterMore}

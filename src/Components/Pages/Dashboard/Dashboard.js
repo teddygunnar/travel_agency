@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Navbar, Sidebar, Registration } from "../../";
+import { Navbar, Sidebar, Registration, Pencairan } from "../../";
 import { Grow } from "@material-ui/core";
 import { BrowserTabs } from "react-browser-tabs";
 import styles from "./Dashboard.module.css";
@@ -38,9 +38,24 @@ const Dashboard = ({ setIsAuth }) => {
     ]);
   };
 
-  const goToTab = () => {
-    activeTab[1](tabs[1].length);
+  const addPencairanTab = () => {
+    activeTab[1](tabs[0].length);
+    tabs[1]([
+      ...tabs[0],
+      {
+        title: "Pencairan Dana",
+        url: "stackoverflow.com",
+        id: "tab2",
+        content: () => <Pencairan />,
+      },
+    ]);
   };
+
+  // const goToTab = () => {
+  //   activeTab[1](tabs[1].length);
+  // };
+
+  const tabProps = { addPencairanTab, addRegisterTab };
 
   return (
     <div className={styles.dashboard}>
@@ -48,7 +63,7 @@ const Dashboard = ({ setIsAuth }) => {
       <Grow in>
         <div className={styles.dashboardMainContainer}>
           <div className={styles.sideBarContainer}>
-            <Sidebar addRegisterTab={addRegisterTab} goToTab={goToTab} />
+            <Sidebar {...tabProps} />
           </div>
           <div className={styles.dashboardMainContent}>
             <BrowserTabs

@@ -1,6 +1,6 @@
 import * as api from "../../api";
 
-export const fetchTableList = (user, session, page) => async () => {
+export const fetchTableList = (user, session, page, filterVal) => async () => {
   const body = {
     rqList: {
       COMPANY_ID: "PERTIWI",
@@ -11,7 +11,7 @@ export const fetchTableList = (user, session, page) => async () => {
       FILTER_MONTH: "ALL",
       FILTER_YEAR: "ALL",
       FILTER_COLOUMN: "",
-      FILTER_VALUE: "",
+      FILTER_VALUE: filterVal,
       PAGE_NO: page,
       PAGE_ROW: "10",
       ROW_ID: "",

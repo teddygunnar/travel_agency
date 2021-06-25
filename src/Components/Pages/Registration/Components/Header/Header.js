@@ -2,16 +2,9 @@ import React from "react";
 import { Typography, InputBase, Button } from "@material-ui/core";
 import SearchIcon from "../../assets/icons/Icon feather-search.svg";
 import FilterIcon from "../../assets/icons/Icon awesome-filter.svg";
-import monthsArray from "./Months";
-import daysArray from "./Days";
-import yearsArray from "./Years";
 import styles from "./Header.module.css";
-import Select from "react-select";
-import SelectStyleDays from "./SelectStyles/CustomSelectStyleDays";
-import SelectStyleMonths from "./SelectStyles/CustomSelectStyleMonths";
-import SelectStyleYears from "./SelectStyles/CustomSelectStyleYears";
 
-const TableHeader = () => {
+const TableHeader = ({ filter, setFilter }) => {
   return (
     <div className={styles.mainContainer}>
       <div className={styles.containerHeader}>
@@ -25,6 +18,9 @@ const TableHeader = () => {
             </div>
             <InputBase
               placeholder="Search...."
+              name="filter"
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
               inputProps={{ "aria-label": "search" }}
             />
             <Typography
@@ -37,30 +33,6 @@ const TableHeader = () => {
             <Button>
               <img src={FilterIcon} alt="Filter Icon" />
             </Button>
-          </div>
-          <div className={styles.date}>
-            <div>
-              <Select
-                styles={SelectStyleDays}
-                options={daysArray}
-                defaultValue={{ label: 1, value: 1 }}
-              />
-            </div>
-            <div>
-              <Select
-                styles={SelectStyleMonths}
-                options={monthsArray}
-                defaultValue={monthsArray[0]}
-                autoSize={false}
-              />
-            </div>
-            <div>
-              <Select
-                styles={SelectStyleYears}
-                options={yearsArray}
-                defaultValue={yearsArray[0]}
-              />
-            </div>
           </div>
         </div>
       </div>

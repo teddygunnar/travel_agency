@@ -4,6 +4,7 @@ import CustomTableStyle from "./TableStyles/CustomTableStyle";
 import CustomRowBackColor from "./TableStyles/CustomRowBackColor";
 import { Checkbox, Button, IconButton } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
+import Check from "@material-ui/icons/Check";
 import EditModal from "./TableEditModal";
 import { TableHeader, Footer } from "../";
 import useStyles from "./styles";
@@ -11,6 +12,8 @@ import { useDispatch } from "react-redux";
 import Pagination from "./pagination";
 import { fetchTableList } from "../../../../../redux/actions/tableData";
 import { deleteDataList } from "../../../../../redux/actions/delete";
+import { cancelDataList } from "../../../../../redux/actions/cancel";
+import { submitDataList } from "../../../../../redux/actions/submit";
 
 const Table = () => {
   let [page, setPage] = useState(1);
@@ -19,8 +22,11 @@ const Table = () => {
   const [selectedRowsData, setSelectedRowsData] = useState([]);
   const [editData, setEditData] = useState([]);
   const [render, setRender] = useState(false);
+  const [filter, setFilter] = useState("");
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  console.log(filter);
 
   const props = {
     toggleModal,
@@ -55,14 +61,15 @@ const Table = () => {
           fetchTableList(
             localStorage.getItem("userId"),
             localStorage.getItem("auth"),
-            page
+            page,
+            filter
           )
         )
       );
     };
     fetchAPI();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [render, page, dispatch, deleteDataList]);
+  }, [filter, render, page, dispatch, deleteDataList]);
 
   const handleEdit = useCallback(
     (row) => {
@@ -85,10 +92,16 @@ const Table = () => {
         poDate: val.PO_DATE,
         branchId: val.BRANCH_ID,
         passangerId: val.PASSANGER_ID,
+        passangerName: val.PASSANGER_NAME,
         passangerBank: val.PASSANGER_BANK_NAME,
         passangerBankBranch: val.PASSANGER_BANK_BRANCH,
         created: val.CREATEBY,
         rowId: val.ROW_ID,
+        status:
+          (val.IS_APPROVED === 1 && "A") ||
+          (val.IS_CANCEL === 1 && "R") ||
+          (!val.IS_ACTIVE && ""),
+        actv: val.IS_ACTIVE === 1 ? <Check /> : false,
         poId: val.PO_ID,
       })),
     ];
@@ -157,6 +170,15 @@ const Table = () => {
         name: "Passanger ID",
         selector: "passangerId",
         sortable: true,
+        center: true,
+        wrap: true,
+        width: "150px",
+      },
+      {
+        name: "Passanger Name",
+        selector: "passangerName",
+        sortable: true,
+        center: true,
         wrap: true,
         width: "150px",
       },
@@ -175,13 +197,7 @@ const Table = () => {
         sortable: true,
         width: "125px",
       },
-      {
-        name: "Created",
-        selector: "created",
-        center: true,
-        sortable: true,
-        width: "85px",
-      },
+
       {
         name: "Row ID",
         selector: "rowId",
@@ -192,6 +208,30 @@ const Table = () => {
         width: "150px",
       },
       {
+        name: "Status",
+        selector: "status",
+        center: true,
+        sortable: true,
+        compact: true,
+        width: "85px",
+      },
+      {
+        name: "Active",
+        selector: "actv",
+        center: true,
+        sortable: true,
+        compact: true,
+        width: "85px",
+      },
+      {
+        name: "Created",
+        selector: "created",
+        center: true,
+        sortable: true,
+        width: "85px",
+      },
+      {
+        name: "Action",
         cell: (row) => (
           <IconButton
             aria-label="edit"
@@ -213,10 +253,46 @@ const Table = () => {
     setSelectedRowsData(state.selectedRows);
   };
 
+  const handleCancelData = () => {
+    if (!selectedRowsData.length) {
+      alert("You haven't choose your data");
+    } else if (window.confirm("Are you sure you want to cancel this data?")) {
+      selectedRowsData.map((val) =>
+        dispatch(
+          cancelDataList(
+            localStorage.getItem("userId"),
+            localStorage.getItem("auth"),
+            val.poId,
+            val.rowId
+          )
+        )
+      );
+      setRender((prev) => !prev);
+    }
+  };
+
+  const handleSubmitData = () => {
+    if (!selectedRowsData.length) {
+      alert("You haven't choose your data");
+    } else if (window.confirm("Are you sure you want to submit this data?")) {
+      selectedRowsData.map((val) =>
+        dispatch(
+          submitDataList(
+            localStorage.getItem("userId"),
+            localStorage.getItem("auth"),
+            val.poId,
+            val.rowId
+          )
+        )
+      );
+      setRender((prev) => !prev);
+    }
+  };
+
   const contextActions = useMemo(() => {
     const handleDelete = () => {
       if (!selectedRowsData.length) {
-        console.log("there is no data in your state");
+        alert("You haven't choose your data");
       } else if (window.confirm("Are you sure you want to delete?")) {
         selectedRowsData.map((val) =>
           dispatch(
@@ -236,14 +312,14 @@ const Table = () => {
 
     return (
       <Button onClick={handleDelete} variant="contained" color="secondary">
-        delete
+        DELETE
       </Button>
     );
   }, [dispatch, selectedRowsData]);
 
   return (
     <div>
-      <TableHeader />
+      <TableHeader filter={filter} setFilter={setFilter} />
       <EditModal {...props} />
       <div>
         <div>
@@ -262,7 +338,10 @@ const Table = () => {
             dense
           />
           <div className={classes.footer}>
-            <Footer />
+            <Footer
+              handleCancelData={handleCancelData}
+              handleSubmitData={handleSubmitData}
+            />
             <div className={classes.paginationBox}>
               <Pagination
                 nextPage={nextPage}

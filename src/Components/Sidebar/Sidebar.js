@@ -6,7 +6,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import TreeItem from "@material-ui/lab/TreeItem";
 
-const Sidebar = ({ addRegisterTab, goToTab }) => {
+const Sidebar = ({ addRegisterTab, addPencairanTab }) => {
   return (
     <Paper className={styles.sidebarContainer}>
       <TreeView
@@ -15,6 +15,11 @@ const Sidebar = ({ addRegisterTab, goToTab }) => {
       >
         <TreeItem nodeId="1" label="Menu">
           <TreeItem nodeId="2" label="Registrasi" onClick={addRegisterTab} />
+          <TreeItem
+            nodeId="3"
+            label="Pencairan Dana"
+            onClick={addPencairanTab}
+          />
         </TreeItem>
       </TreeView>
     </Paper>
