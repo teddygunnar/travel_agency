@@ -22,11 +22,11 @@ const Table = () => {
   const [selectedRowsData, setSelectedRowsData] = useState([]);
   const [editData, setEditData] = useState([]);
   const [render, setRender] = useState(false);
-  const [filter, setFilter] = useState("");
+  const [filterVal, setFilterVal] = useState("");
+  const [filterCol, setFilterCol] = useState("");
+
   const classes = useStyles();
   const dispatch = useDispatch();
-
-  console.log(filter);
 
   const props = {
     toggleModal,
@@ -62,14 +62,15 @@ const Table = () => {
             localStorage.getItem("userId"),
             localStorage.getItem("auth"),
             page,
-            filter
+            filterCol,
+            filterVal
           )
         )
       );
     };
     fetchAPI();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter, render, page, dispatch, deleteDataList]);
+  }, [filterVal, filterCol, render, page, dispatch, deleteDataList]);
 
   const handleEdit = useCallback(
     (row) => {
@@ -85,25 +86,27 @@ const Table = () => {
 
   const data = useMemo(() => {
     return [
-      ...fetchedData.map((val, i) => ({
-        no: val.ROW_NUMBER,
-        customerId: val.CUSTOMER_ID,
-        customerName: val.CUSTOMER_NAME,
-        poDate: val.PO_DATE,
-        branchId: val.BRANCH_ID,
-        passangerId: val.PASSANGER_ID,
-        passangerName: val.PASSANGER_NAME,
-        passangerBank: val.PASSANGER_BANK_NAME,
-        passangerBankBranch: val.PASSANGER_BANK_BRANCH,
-        created: val.CREATEBY,
-        rowId: val.ROW_ID,
-        status:
-          (val.IS_APPROVED === 1 && "A") ||
-          (val.IS_CANCEL === 1 && "R") ||
-          (!val.IS_ACTIVE && ""),
-        actv: val.IS_ACTIVE === 1 ? <Check /> : false,
-        poId: val.PO_ID,
-      })),
+      ...(fetchedData === undefined
+        ? "null"
+        : fetchedData.map((val, i) => ({
+            no: val.ROW_NUMBER,
+            customerId: val.CUSTOMER_ID,
+            customerName: val.CUSTOMER_NAME,
+            poDate: val.PO_DATE,
+            branchId: val.BRANCH_ID,
+            passangerId: val.PASSANGER_ID,
+            passangerName: val.PASSANGER_NAME,
+            passangerBank: val.PASSANGER_BANK_NAME,
+            passangerBankBranch: val.PASSANGER_BANK_BRANCH,
+            created: val.CREATEBY,
+            rowId: val.ROW_ID,
+            status:
+              (val.IS_APPROVED === 1 && "A") ||
+              (val.IS_CANCEL === 1 && "R") ||
+              (!val.IS_ACTIVE && ""),
+            actv: val.IS_ACTIVE === 1 ? <Check /> : false,
+            poId: val.PO_ID,
+          }))),
     ];
   }, [fetchedData]);
 
@@ -319,19 +322,28 @@ const Table = () => {
 
   return (
     <div>
-      <TableHeader filter={filter} setFilter={setFilter} />
+      <TableHeader
+        filterVal={filterVal}
+        setFilterVal={setFilterVal}
+        filterCol={filterCol}
+        setFilterCol={setFilterCol}
+      />
       <EditModal {...props} />
       <div>
         <div>
           <DataTable
             columns={columns}
-            data={data}
+            data={!fetchedData ? "" : data}
             selectableRows
             contextActions={contextActions}
             selectableRowsComponent={Checkbox}
             selectableRowsComponentProps={checkBoxProps}
             onSelectedRowsChange={handleChange}
-            noDataComponent={"Fetching data, please wait..."}
+            noDataComponent={
+              !fetchedData
+                ? "The data you're searching for is invalid or haven't registered yet"
+                : "Fetching data, please wait..."
+            }
             selectableRowsHighlight
             customStyles={CustomTableStyle}
             conditionalRowStyles={CustomRowBackColor}

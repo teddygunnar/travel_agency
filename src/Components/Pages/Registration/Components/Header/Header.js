@@ -1,10 +1,42 @@
-import React from "react";
-import { Typography, InputBase, Button } from "@material-ui/core";
-import SearchIcon from "../../assets/icons/Icon feather-search.svg";
-import FilterIcon from "../../assets/icons/Icon awesome-filter.svg";
+import React, { useState } from "react";
+import {
+  Typography,
+  InputBase,
+  IconButton,
+  Menu,
+  MenuItem,
+} from "@material-ui/core";
+import FilterListIcon from "@material-ui/icons/FilterList";
 import styles from "./Header.module.css";
 
-const TableHeader = ({ filter, setFilter }) => {
+const TableHeader = ({ filterVal, setFilterVal, filterCol, setFilterCol }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const radioInput = [
+    { label: "None", value: "" },
+    { label: "ID Kustomer", value: "CUSTOMER_ID" },
+    { label: "Nama Kustomer", value: "CUSTOMER_NAME" },
+    { label: "Nama Penumpang", value: "PASSANGER_NAME" },
+    { label: "ID Penumpang", value: "PASSANGER_ID" },
+    { label: "PO ID", value: "PO_ID" },
+  ];
+
+  const handleChangeColumn = (e) => {
+    setFilterCol(e.target.value);
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (e) => {
+    setAnchorEl(null);
+    const { value } = e.currentTarget.dataset;
+    setFilterCol(value);
+    console.log(value);
+  };
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.containerHeader}>
@@ -12,27 +44,48 @@ const TableHeader = ({ filter, setFilter }) => {
         <div className={styles.contHeaderRight}>
           <div className={styles.searchBar}>
             <div className={styles.searchIcon}>
-              <Button color="primary">
-                <img src={SearchIcon} alt="Search Icon" />
-              </Button>
+              <IconButton onClick={handleClick}>
+                <FilterListIcon color="primary" />
+              </IconButton>
+              <div>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  PaperProps={{
+                    style: {
+                      maxHeight: 40 * 4.5,
+                      width: "20ch",
+                    },
+                  }}
+                >
+                  {radioInput.map((val, i) => (
+                    <MenuItem
+                      key={i}
+                      data-value={val.value}
+                      onClick={handleClose}
+                    >
+                      <input
+                        type="radio"
+                        value={val.value}
+                        defaultChecked={val.value[0]}
+                        checked={filterCol === val.value}
+                        onChange={handleChangeColumn}
+                      />
+                      &nbsp;
+                      {val.label}
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </div>
             </div>
             <InputBase
               placeholder="Search...."
-              name="filter"
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
+              name="filterVal"
+              value={filterVal}
+              onChange={(e) => setFilterVal(e.target.value)}
               inputProps={{ "aria-label": "search" }}
             />
-            <Typography
-              style={{ color: "#3F63F5" }}
-              align="right"
-              variant="body2"
-            >
-              - No.SR
-            </Typography>
-            <Button>
-              <img src={FilterIcon} alt="Filter Icon" />
-            </Button>
           </div>
         </div>
       </div>
