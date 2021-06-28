@@ -1,5 +1,5 @@
 import request from "../utils/fetch";
-
+//API REGISTRASI
 export const SignIn = (body) => request.post("/SYSMAN/login", body);
 
 export const GetClientKey = (body) => request.post("/SYSMAN/client", body);
@@ -24,3 +24,7 @@ export const submitData = (body) => request.post("/TRAVEL/po", body);
 
 export const getCustomerList = (body) =>
   request.post("/TRAVEL/m_customer", body);
+
+//API PENCAIRAN DANA
+export const TableDataPencairan = (body) =>
+  request.post("/TRAVEL/pencairan", body);

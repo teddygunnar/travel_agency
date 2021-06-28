@@ -1,11 +1,12 @@
 import React from "react";
+import Header from "./Header/Header";
 
-const PencairanDana = () => {
+const index = () => {
   return (
     <div>
-      <h1>Pencairan Dana</h1>
+      <Header />
     </div>
   );
 };
 
-export default PencairanDana;
+export default index;

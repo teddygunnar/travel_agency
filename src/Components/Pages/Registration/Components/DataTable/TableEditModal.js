@@ -71,12 +71,6 @@ const EditModal = ({
           )
         )
       );
-    };
-    fetchAPI();
-  }, [dispatch]);
-
-  useEffect(() => {
-    const fetchAPI = async () => {
       setListBank(
         await dispatch(
           fetchBankList(
@@ -85,12 +79,6 @@ const EditModal = ({
           )
         )
       );
-    };
-    fetchAPI();
-  }, [dispatch]);
-
-  useEffect(() => {
-    const fetchAPI = async () => {
       setListBatch(
         await dispatch(
           fetchBatchList(
