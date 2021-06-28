@@ -34,7 +34,6 @@ const TableHeader = ({ filterVal, setFilterVal, filterCol, setFilterCol }) => {
     setAnchorEl(null);
     const { value } = e.currentTarget.dataset;
     setFilterCol(value);
-    console.log(value);
   };
 
   return (
