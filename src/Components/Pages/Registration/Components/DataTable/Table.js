@@ -198,6 +198,7 @@ const Table = () => {
         selector: "passangerBankBranch",
         center: true,
         sortable: true,
+        compact: true,
         width: "125px",
       },
 
@@ -231,6 +232,7 @@ const Table = () => {
         selector: "created",
         center: true,
         sortable: true,
+        compact: true,
         width: "85px",
       },
       {

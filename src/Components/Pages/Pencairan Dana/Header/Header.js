@@ -49,6 +49,59 @@ const Header = () => {
             </div>
           </div>
         </div>
+        <div className={classes.headers}>
+          <div className={classes.periodBox}>
+            <Typography variant="h5" gutterBottom>
+              Realisasi
+            </Typography>
+            <div className={classes.period}>
+              <div>
+                <Typography>Jam</Typography>
+              </div>
+              <div>
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  placeholder="ex. 13:45"
+                />
+              </div>
+            </div>
+            <div className={classes.period}>
+              <div>
+                <Typography>Cabang</Typography>
+              </div>
+              <div>
+                <Dropdown clearable search selection />
+              </div>
+            </div>
+          </div>
+          <div className={classes.periodBox}>
+            <Typography variant="h5" gutterBottom>
+              Nilai
+            </Typography>
+            <div className={classes.value}>
+              <div>
+                <Typography>Total Pencairan</Typography>
+              </div>
+              <div>
+                <Typography>Rp.45.000,000,-</Typography>
+              </div>
+            </div>
+            <div className={classes.value}>
+              <div>
+                <Typography>Total PO</Typography>
+              </div>
+              <div>
+                <Typography>420</Typography>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className={classes.saveBtn}>
+          <Button variant="contained" color="primary">
+            Save
+          </Button>
+        </div>
       </Paper>
     </Container>
   );

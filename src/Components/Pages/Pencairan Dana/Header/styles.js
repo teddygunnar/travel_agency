@@ -32,6 +32,7 @@ export default makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "center",
     width: "40%",
+    marginRight: "25px",
   },
 
   flexBox: {
@@ -46,5 +47,17 @@ export default makeStyles((theme) => ({
     alignItems: "center",
     marginBottom: 10,
     justifyContent: "space-between",
+  },
+
+  value: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+    justifyContent: "space-between",
+  },
+
+  saveBtn: {
+    padding: "15px 25px",
   },
 }));
