@@ -7,6 +7,7 @@ export default makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 25,
+    marginTop: 25,
   },
 
   paper: {
@@ -24,7 +25,7 @@ export default makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    width: "40%",
+    width: "45%",
   },
 
   infoBox: {

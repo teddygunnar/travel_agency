@@ -61,4 +61,8 @@ export default makeStyles((theme) => ({
     justifyContent: "space-between",
     margin: "3rem 0",
   },
+
+  smoothHeaderDrop: {
+    transition: "height 0.3s ease-in-out",
+  },
 }));

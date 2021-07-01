@@ -28,3 +28,9 @@ export const getCustomerList = (body) =>
 //API PENCAIRAN DANA
 export const TableDataPencairan = (body) =>
   request.post("/TRAVEL/pencairan", body);
+
+export const addDataPencairan = (body) =>
+  request.post("/TRAVEL/pencairan", body);
+
+export const addDetailPencairan = (body) =>
+  request.post("/TRAVEL/pencairan", body);

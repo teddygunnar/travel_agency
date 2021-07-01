@@ -16,6 +16,7 @@
     "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-browser-tabs": "^1.0.13",
+    "react-countup": "^4.4.0",
     "react-data-table-component": "^6.11.7",
     "react-dom": "^17.0.2",
     "react-dropdown-select": "^4.7.4",

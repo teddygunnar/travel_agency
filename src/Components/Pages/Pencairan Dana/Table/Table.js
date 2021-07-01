@@ -1,139 +1,96 @@
-import React from "react";
-import { Typography, Container } from "@material-ui/core";
+import React, { useState } from "react";
+import { Typography, Container, Button } from "@material-ui/core";
+import columns from "./TableColumn/Columns";
+import listColumns from "./TableColumn/ListColumns";
 import useStyles from "./styles";
 import DataTable from "react-data-table-component";
 import CustomTableStyle from "./TableStyles/CustomTableStyle";
 import CustomRowBackColor from "./TableStyles/CustomRowBackColor";
 
-const Table = () => {
+const Table = ({ fetchedData, fetchedDataList }) => {
   const classes = useStyles();
+  const [switchMode, setSwitchMode] = useState(false);
 
-  const columns = [
-    {
-      name: "No.",
-      selector: "no",
-      center: true,
-      sortable: true,
-      compact: true,
-      width: "50px",
-    },
-    {
-      name: "Kode Cabang",
-      selector: "kodeCabang",
-      center: true,
-      sortable: true,
-      compact: true,
-      width: "250px",
-    },
-    {
-      name: "No PO",
-      selector: "noPo",
-      center: true,
-      sortable: true,
-      compact: true,
-      width: "150px",
-    },
-    {
-      name: "No Aplikasi",
-      selector: "noApp",
-      center: true,
-      sortable: true,
-      compact: true,
-      width: "150px",
-    },
-    {
-      name: "Kustomer",
-      selector: "kustomer",
-      center: true,
-      sortable: true,
-      compact: true,
-      width: "250px",
-    },
-    {
-      name: "Penumpang",
-      selector: "penumpang",
-      center: true,
-      sortable: true,
-      compact: true,
-      width: "250px",
-    },
-    {
-      name: "No Rek",
-      selector: "noRek",
-      center: true,
-      sortable: true,
-      compact: true,
-      width: "100px",
-    },
-    {
-      name: "Bank",
-      selector: "bank",
-      center: true,
-      sortable: true,
-      compact: true,
-      width: "250px",
-    },
-    {
-      name: "Pencairan",
-      selector: "pencairan",
-      center: true,
-      sortable: true,
-      compact: true,
-      width: "150px",
-    },
-    {
-      name: "Cabang",
-      selector: "cabang",
-      center: true,
-      sortable: true,
-      compact: true,
-      width: "150px",
-    },
-  ];
+  const toggleSwitch = () => setSwitchMode((prev) => !prev);
 
-  const data = [
-    {
-      no: "1",
-      kodeCabang: "4500 - Semarang",
-      noPo: "123",
-      noApp: "1234",
-      kustomer: "1349 - ARIF",
-      penumpang: "1254 - ALI",
-      noRek: "123456789",
-      bank: "BANK MEGA SYARIAH",
-      pencairan: "25.000",
-      cabang: "SEMARANG",
-    },
-    {
-      no: "2",
-      kodeCabang: "2500 - Jakarta",
-      noPo: "321",
-      noApp: "4321",
-      kustomer: "9431 - DHANIS",
-      penumpang: "4521 - VANCE",
-      noRek: "112233445566",
-      bank: "CIMB NIAGA",
-      pencairan: "25,000.000",
-      cabang: "JAKARTA",
-    },
-    {},
-  ];
+  const data = fetchedData.map((val, i) => ({
+    no: i + 1,
+    kodeCabang: `${val.BRANCH_ID} - ${val.BRANCH_NAME}`,
+    noPo: val.PO_ID,
+    noApp: val.APPLICATION_ID,
+    kustomer: `${val.CUSTOMER_ID} - ${val.CUSTOMER_NAME}`,
+    penumpang: `${val.PASSANGER_ID} - ${val.PASSANGER_NAME}`,
+    noRek: val.PASSANGER_BANK_NO,
+    bank: val.PASSANGER_BANK_NAME,
+    pencairan: val.NETTO_VAL,
+    cabang: val.BRANCH_NAME,
+  }));
+
+  const dataList = fetchedDataList.map((val, i) => ({
+    no: val.ROW_NUMBER,
+    batchPencairan: val.PENCAIRAN_BATCH_ID,
+    tanggalPencairan: val.PENCAIRAN_DATE,
+    waktuTrf: val.TRANSFER_TIME,
+    deskripsi: val.REMARK,
+    status: (val.IS_APPROVED === 1 && "A") || (!val.IS_ACTIVE && ""),
+    createBy: val.CREATEBY,
+  }));
 
   return (
     <Container maxWidth="lg" className={classes.container}>
-      <div>
-        <Typography variant="h5">Informasi Detail Pencairan </Typography>
-      </div>
-
-      <div className={classes.table}>
-        <DataTable
-          columns={columns}
-          data={data}
-          customStyles={CustomTableStyle}
-          conditionalRowStyles={CustomRowBackColor}
-          noHeader
-          dense
-        />
+      {!switchMode ? (
+        <div>
+          <div>
+            <Typography variant="h5">Informasi Detail Pencairan </Typography>
+          </div>
+          <div className={classes.table}>
+            <DataTable
+              columns={columns}
+              data={data}
+              customStyles={CustomTableStyle}
+              conditionalRowStyles={CustomRowBackColor}
+              noDataComponent={
+                !fetchedData.length
+                  ? "The data you're searching for is invalid or haven't registered yet"
+                  : "Fetching data, please wait..."
+              }
+              noHeader
+              dense
+            />
+          </div>
+        </div>
+      ) : (
+        <div>
+          <div>
+            <Typography variant="h5">List Pencairan</Typography>
+          </div>
+          <div className={classes.table}>
+            <DataTable
+              columns={listColumns}
+              data={dataList}
+              customStyles={CustomTableStyle}
+              conditionalRowStyles={CustomRowBackColor}
+              noDataComponent={
+                "The data you're searching for is invalid or haven't registered yet"
+              }
+              noHeader
+              dense
+            />
+          </div>
+        </div>
+      )}
+      <div className={classes.buttonBox}>
+        <Button
+          fullWidth
+          variant="outlined"
+          color="primary"
+          size="large"
+          onClick={toggleSwitch}
+        >
+          {!switchMode
+            ? "Lihat List Pencairan"
+            : "Lihat Informasi Detail Pencairan"}
+        </Button>
       </div>
     </Container>
   );

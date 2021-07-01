@@ -8,4 +8,9 @@ export default makeStyles((theme) => ({
   table: {
     marginTop: "1rem",
   },
+
+  buttonBox: {
+    width: "100%",
+    marginTop: "15px",
+  },
 }));

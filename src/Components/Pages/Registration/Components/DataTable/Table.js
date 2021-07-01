@@ -332,7 +332,7 @@ const Table = () => {
       />
       <EditModal {...props} />
       <div>
-        <div>
+        <div className={classes.smoothHeaderDrop}>
           <DataTable
             columns={columns}
             data={!fetchedData ? "" : data}
@@ -341,6 +341,7 @@ const Table = () => {
             selectableRowsComponent={Checkbox}
             selectableRowsComponentProps={checkBoxProps}
             onSelectedRowsChange={handleChange}
+            noHeader={!selectedRowsData.length ? true : false}
             noDataComponent={
               !fetchedData
                 ? "The data you're searching for is invalid or haven't registered yet"
@@ -350,6 +351,7 @@ const Table = () => {
             customStyles={CustomTableStyle}
             conditionalRowStyles={CustomRowBackColor}
             dense
+            style={{ transition: "ease-in-out 1s" }}
           />
           <div className={classes.footer}>
             <Footer

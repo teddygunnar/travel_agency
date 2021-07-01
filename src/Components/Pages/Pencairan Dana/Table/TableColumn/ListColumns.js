@@ -1,0 +1,60 @@
+const listColumns = [
+  {
+    name: "No.",
+    selector: "no",
+    center: true,
+    sortable: true,
+    compact: true,
+    width: "50px",
+  },
+  {
+    name: "Batch Pencairan",
+    selector: "batchPencairan",
+    center: true,
+    sortable: true,
+    compact: true,
+    width: "150px",
+  },
+  {
+    name: "Tanggal Pencairan",
+    selector: "tanggalPencairan",
+    center: true,
+    sortable: true,
+    compact: true,
+    width: "150px",
+  },
+  {
+    name: "Waktu Transfer",
+    selector: "waktuTrf",
+    center: true,
+    sortable: true,
+    compact: true,
+    width: "150px",
+  },
+  {
+    name: "Deskripsi",
+    selector: "deskripsi",
+    center: true,
+    sortable: true,
+    compact: true,
+    width: "265px",
+  },
+  {
+    name: "Status",
+    selector: "status",
+    center: true,
+    sortable: true,
+    compact: true,
+    width: "80px",
+  },
+  {
+    name: "Created by",
+    selector: "createBy",
+    center: true,
+    sortable: true,
+    compact: true,
+    width: "100px",
+  },
+];
+
+export default listColumns;
