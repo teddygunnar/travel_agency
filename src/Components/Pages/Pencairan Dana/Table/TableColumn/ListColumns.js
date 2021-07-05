@@ -24,6 +24,14 @@ const listColumns = [
     width: "150px",
   },
   {
+    name: "Bank",
+    selector: "bank",
+    center: true,
+    sortable: true,
+    compact: true,
+    width: "190px",
+  },
+  {
     name: "Waktu Transfer",
     selector: "waktuTrf",
     center: true,

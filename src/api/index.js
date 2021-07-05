@@ -1,4 +1,5 @@
 import request from "../utils/fetch";
+import file from "../utils/upload";
 //API REGISTRASI
 export const SignIn = (body) => request.post("/SYSMAN/login", body);
 
@@ -24,6 +25,8 @@ export const submitData = (body) => request.post("/TRAVEL/po", body);
 
 export const getCustomerList = (body) =>
   request.post("/TRAVEL/m_customer", body);
+
+export const uploadFile = (body) => file.upload("/uploader", body);
 
 //API PENCAIRAN DANA
 export const TableDataPencairan = (body) =>

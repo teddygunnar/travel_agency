@@ -16,6 +16,7 @@ export const fetchTableList =
         PAGE_NO: page,
         PAGE_ROW: "10",
         ROW_ID: "",
+        FILE_NAME: "",
       },
     };
     try {

@@ -40,7 +40,7 @@ const defaultData = {
 
 const FormTable = () => {
   const classes = useStlyes();
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(4);
   const [formData, setForm] = useState(defaultData);
 
   const next = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);

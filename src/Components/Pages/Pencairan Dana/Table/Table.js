@@ -30,6 +30,7 @@ const Table = ({ fetchedData, fetchedDataList }) => {
     no: val.ROW_NUMBER,
     batchPencairan: val.PENCAIRAN_BATCH_ID,
     tanggalPencairan: val.PENCAIRAN_DATE,
+    bank: val.TRANSFER_BANK_ID,
     waktuTrf: val.TRANSFER_TIME,
     deskripsi: val.REMARK,
     status: (val.IS_APPROVED === 1 && "A") || (!val.IS_ACTIVE && ""),
