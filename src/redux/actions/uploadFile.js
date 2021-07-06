@@ -3,15 +3,6 @@ import FormData from "form-data";
 
 export const fileUpload = (file) => async () => {
   let data = new FormData();
-  let rawData = {
-    rqUpload: {
-      COMPANY_ID: "PERTIWI",
-      SITE_ID: "JKT",
-      USER_ID: "dilly",
-      SESSION_LOGIN_ID:
-        "449B07AC0AE6EEA4441852AFD304EED40D6B0EC33766A3B530480D540ECA2224",
-    },
-  };
 
   data.append("UPLOAD_FILE", file);
   data.append(

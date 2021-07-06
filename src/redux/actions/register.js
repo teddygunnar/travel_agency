@@ -19,7 +19,8 @@ export const addData =
     namaPenumpang,
     noRek,
     bank,
-    bankCabang
+    bankCabang,
+    fileName
   ) =>
   async () => {
     const body = {
@@ -47,6 +48,7 @@ export const addData =
         PASSANGER_BANK_NO: noRek,
         PASSANGER_BANK_NAME: bank,
         PASSANGER_BANK_BRANCH: bankCabang,
+        FILE_NAME: fileName,
       },
     };
 
