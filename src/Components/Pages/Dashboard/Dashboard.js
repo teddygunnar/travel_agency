@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Navbar, Sidebar, Registration, Pencairan } from "../../";
+import { Navbar, Sidebar, Registration, Pencairan, Disbursement } from "../../";
 import { Grow } from "@material-ui/core";
 import { BrowserTabs } from "react-browser-tabs";
 import styles from "./Dashboard.module.css";
@@ -51,11 +51,24 @@ const Dashboard = ({ setIsAuth }) => {
     ]);
   };
 
+  const addDisbursementTab = () => {
+    activeTab[1](tabs[0].length);
+    tabs[1]([
+      ...tabs[0],
+      {
+        title: "Disbursement",
+        url: "stackoverflow.com",
+        id: "tab2",
+        content: () => <Disbursement />,
+      },
+    ]);
+  };
+
   // const goToTab = () => {
   //   activeTab[1](tabs[1].length);
   // };
 
-  const tabProps = { addPencairanTab, addRegisterTab };
+  const tabProps = { addPencairanTab, addRegisterTab, addDisbursementTab };
 
   return (
     <div className={styles.dashboard}>

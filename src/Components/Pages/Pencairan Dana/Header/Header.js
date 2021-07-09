@@ -98,7 +98,7 @@ const Header = ({ formPencairan, setFormPencairan, fetchedData }) => {
       <Typography variant="h3" gutterBottom>
         Pencairan Dana
       </Typography>
-      <Paper elevation={3} className={classes.paper}>
+      <Paper elevation={1} className={classes.paper}>
         <form onSubmit={handleSubmit}>
           <div className={classes.headers}>
             <div className={classes.periodBox}>
@@ -234,7 +234,12 @@ const Header = ({ formPencairan, setFormPencairan, fetchedData }) => {
             </div>
           </div>
           <div className={classes.saveBtn}>
-            <Button variant="contained" color="primary" type="submit">
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              style={{ borderRadius: 25 }}
+            >
               Save
             </Button>
           </div>

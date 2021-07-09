@@ -8,7 +8,6 @@ const Review = ({ formData, back }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [status, setStatus] = useState("00");
-  console.log(formData);
   // const history = useHistory();
 
   const {
@@ -30,8 +29,6 @@ const Review = ({ formData, back }) => {
     bankCabang,
     uploadedFile,
   } = formData;
-
-  console.log(uploadedFile);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -11,7 +11,9 @@ export default makeStyles((theme) => ({
   },
 
   paper: {
-    width: 750,
+    width: "100%",
+    border: "1px solid rgba(0, 123, 255,0.5)",
+    borderRadius: 25,
   },
   headers: {
     display: "flex",

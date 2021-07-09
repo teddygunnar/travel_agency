@@ -19,6 +19,7 @@ const Index = () => {
   });
   const [fetchedData, setFetchedData] = useState([]);
   const [fetchedDataList, setFetchedDataList] = useState([]);
+  const [render, setRender] = useState(false);
 
   const { tglPencairan, batchPencairan } = formPencairan;
 
@@ -45,7 +46,7 @@ const Index = () => {
 
   useEffect(() => {
     fetchAPI();
-  }, [dispatch, tglPencairan, batchPencairan]);
+  }, [dispatch, tglPencairan, batchPencairan, render]);
 
   console.log(fetchedData);
 
@@ -54,6 +55,7 @@ const Index = () => {
     setFormPencairan,
     fetchedData,
     fetchedDataList,
+    setRender,
   };
 
   return (

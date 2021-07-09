@@ -61,6 +61,8 @@ const EditModal = ({
     PASSANGER_BANK_BRANCH,
   } = editData;
 
+  console.log(editData);
+
   useEffect(() => {
     const fetchAPI = async () => {
       setBranch(
@@ -157,7 +159,7 @@ const EditModal = ({
       dispatch(
         editDataList(
           localStorage.getItem("userId"),
-          localStorage.getItem("session"),
+          localStorage.getItem("auth"),
           ROW_ID,
           APPLICATION_ID,
           PO_ID,

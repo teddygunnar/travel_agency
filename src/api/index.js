@@ -32,6 +32,9 @@ export const uploadFile = (body) => file.upload("/uploader", body);
 export const TableDataPencairan = (body) =>
   request.post("/TRAVEL/pencairan", body);
 
+export const editDataPencairan = (body) =>
+  request.post("/TRAVEL/pencairan", body);
+
 export const addDataPencairan = (body) =>
   request.post("/TRAVEL/pencairan", body);
 
