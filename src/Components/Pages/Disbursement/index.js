@@ -1,15 +1,13 @@
-import React from "react";
-import { Typography } from "@material-ui/core";
+import React, { useState } from "react";
 import Header from "./Header/Header";
 import Table from "./Table/TableDisbursement";
 
-const index = () => {
+const Index = () => {
   return (
     <div>
-      <Header />
       <Table />
     </div>
   );
 };
 
-export default index;
+export default Index;

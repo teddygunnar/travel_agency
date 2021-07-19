@@ -127,7 +127,6 @@ const Table = () => {
         omit: true,
         sortable: true,
         compact: true,
-        width: "150px",
       },
       {
         name: "PO ID",

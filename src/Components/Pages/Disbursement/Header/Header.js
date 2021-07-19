@@ -8,14 +8,11 @@ import {
 } from "@material-ui/core";
 import useStyles from "./styles";
 
-const Header = () => {
+const Header = ({ disburseData }) => {
   const classes = useStyles();
 
   return (
     <Container maxWidth="lg">
-      <div className={classes.titleHeader}>
-        <Typography variant="h3">Disbursement</Typography>
-      </div>
       <Grid
         container
         item
@@ -30,7 +27,7 @@ const Header = () => {
               label="No Disbursement"
               variant="outlined"
               fullWidth
-              value="2021000000001"
+              value={disburseData ? disburseData.disbNo : ""}
               disabled
               required
               className={classes.textFieldHeader}
@@ -41,6 +38,8 @@ const Header = () => {
               label="Tgl Disbursement"
               variant="outlined"
               type="date"
+              disabled
+              value={disburseData ? disburseData.disbDate : ""}
               fullWidth
               InputLabelProps={{ shrink: true }}
               className={classes.textFieldHeader}
@@ -49,6 +48,7 @@ const Header = () => {
         </div>
         <TextareaAutosize
           placeholder="Keterangan"
+          value={disburseData ? disburseData.ket : ""}
           rowsMin={7}
           rowsMax={7}
           className={classes.textareaAutosize}

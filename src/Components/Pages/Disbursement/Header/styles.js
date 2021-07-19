@@ -4,7 +4,7 @@ export default makeStyles((theme) => ({
   textareaAutosize: {
     width: 325,
     borderRadius: 5,
-    padding: 5,
+    padding: 15,
     resize: "none",
   },
 
