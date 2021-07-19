@@ -7,6 +7,8 @@ import Header from "../Header/Header";
 import Filter from "../TableFilter/TableFilter";
 import { listOfPo } from "../../../../redux/actionsDisbursement/ListPo";
 import { listDetail } from "../../../../redux/actionsDisbursement/ListDetail";
+import { AddPoToDetailList } from "../../../../redux/actionsDisbursement/AddPoToDetail";
+import { DeleteFromDetailList } from "../../../../redux/actionsDisbursement/DeleteFromDetail";
 import CustomTableStyle from "./TableStyles/CustomTableStyle";
 
 function getModalStyle() {
@@ -39,13 +41,18 @@ const TableDisbursementModal = ({
   const [filter, setFilter] = useState(filterData);
   const [listPo, setListPo] = useState([]);
   const [detailList, setDetailList] = useState([]);
+  const [selectedRowsData, setSelectedRowsData] = useState([]);
+  const [render, setRender] = useState(false);
   const classes = useStyles();
   const dispatch = useDispatch();
   const [modalStyle] = useState(getModalStyle);
 
+  const { disbNo } = disburseData;
+
   const handleClose = () => {
     if (window.confirm("Are you sure you want to exit?")) {
       setToggleModal(false);
+      setDetailList([]);
       console.log("exit");
     } else {
       console.log("not exit");
@@ -68,8 +75,6 @@ const TableDisbursementModal = ({
     customer,
     cabang,
   } = filter;
-
-  const { disbNo } = disburseData;
 
   const fetchAPI = async () => {
     setListPo(
@@ -100,7 +105,7 @@ const TableDisbursementModal = ({
 
   useEffect(() => {
     fetchAPI();
-  }, [disburseData, filterData]);
+  }, [disburseData, filterData, render]);
 
   const ListPoColumns = useMemo(
     () => [
@@ -111,12 +116,14 @@ const TableDisbursementModal = ({
         sortable: true,
         compact: true,
       },
+
       {
         name: "PO ID",
         selector: "poId",
         center: true,
         sortable: true,
         compact: true,
+        width: "150px",
       },
       {
         name: "Customer",
@@ -124,6 +131,8 @@ const TableDisbursementModal = ({
         center: true,
         sortable: true,
         compact: true,
+        wrap: true,
+        width: "250px",
       },
       {
         name: "Cabang",
@@ -163,9 +172,6 @@ const TableDisbursementModal = ({
     ];
   }, [listPo]);
 
-  console.log(disbNo);
-  console.log(detailList);
-
   const ListDetailColumns = useMemo(
     () => [
       {
@@ -176,11 +182,20 @@ const TableDisbursementModal = ({
         compact: true,
       },
       {
+        name: "Row ID",
+        selector: "rowId",
+        center: true,
+        sortable: true,
+        compact: true,
+        omit: true,
+      },
+      {
         name: "PO ID",
         selector: "poId",
         center: true,
         sortable: true,
         compact: true,
+        width: "150px",
       },
       {
         name: "Customer",
@@ -188,6 +203,8 @@ const TableDisbursementModal = ({
         center: true,
         sortable: true,
         compact: true,
+        wrap: true,
+        width: "250px",
       },
       {
         name: "Cabang",
@@ -216,16 +233,20 @@ const TableDisbursementModal = ({
 
   const ListDetailData = useMemo(() => {
     return [
-      ...detailList.map((val, i) => ({
-        tglCair: val.PENCAIRAN_DATE,
-        poId: val.PO_ID,
-        customer: `${val.CUSTOMER_ID} - ${val.CUSTOMER_NAME}`,
-        cabang: val.BRANCH_ID,
-        namaCabang: val.BRANCH_NAME,
-        totalTagihan: val.TOTAL_TAGIHAN,
-      })),
+      ...(detailList === undefined
+        ? "null"
+        : detailList.map((val, i) => ({
+            tglCair: val.PENCAIRAN_DATE,
+            rowId: val.ROW_ID,
+            poId: val.PO_ID,
+            customer: `${val.CUSTOMER_ID} - ${val.CUSTOMER_NAME}`,
+            cabang: val.BRANCH_ID,
+            namaCabang: val.BRANCH_NAME,
+            totalTagihan: val.TOTAL_TAGIHAN,
+          }))),
       {
         tglCair: "",
+        rowId: "",
         poId: "",
         customer: "",
         cabang: "",
@@ -234,6 +255,40 @@ const TableDisbursementModal = ({
       },
     ];
   }, [detailList]);
+
+  const handleChange = (state) => {
+    setSelectedRowsData(state.selectedRows);
+  };
+
+  console.log(selectedRowsData);
+
+  const addToDetail = () => {
+    selectedRowsData.map((val) => {
+      dispatch(
+        AddPoToDetailList(
+          localStorage.getItem("userId"),
+          localStorage.getItem("auth"),
+          disbNo,
+          val.poId
+        )
+      );
+    });
+    setRender((prev) => !prev);
+  };
+
+  const deleteFrom = () => {
+    selectedRowsData.map((val) => {
+      dispatch(
+        DeleteFromDetailList(
+          localStorage.getItem("userId"),
+          localStorage.getItem("auth"),
+          disbNo,
+          val.rowId
+        )
+      );
+      setRender((prev) => !prev);
+    });
+  };
 
   const body = (
     <Container style={modalStyle} className={classes.modalContainer}>
@@ -247,6 +302,7 @@ const TableDisbursementModal = ({
           data={ListPoData}
           noHeader
           dense
+          onSelectedRowsChange={handleChange}
           customStyles={CustomTableStyle}
           selectableRows
           style={{ width: "45%", border: "1px solid rgba(0,0,0,0.2)" }}
@@ -256,10 +312,41 @@ const TableDisbursementModal = ({
           data={ListDetailData}
           noHeader
           dense
+          onSelectedRowsChange={handleChange}
+          noDataComponent={
+            "The data you're searching for is invalid or haven't registered yet"
+          }
           customStyles={CustomTableStyle}
           selectableRows
           style={{ width: "45%", border: "1px solid rgba(0,0,0,0.2)" }}
         />
+      </div>
+      <div
+        style={{
+          marginTop: 15,
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-around",
+          alignCenter: "center",
+        }}
+      >
+        <Button
+          variant="outlined"
+          color="primary"
+          style={{ margin: 5 }}
+          onClick={addToDetail}
+        >
+          Add
+        </Button>
+        <Button
+          variant="outlined"
+          color="secondary"
+          style={{ margin: 5 }}
+          onClick={deleteFrom}
+        >
+          Delete
+        </Button>
       </div>
     </Container>
   );
