@@ -274,7 +274,6 @@ const EditModal = ({
             />
           </Grid>
         </div>
-
         <div>
           <Typography variant="h5" gutterBottom>
             Cabang

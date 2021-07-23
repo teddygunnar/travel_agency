@@ -13,10 +13,11 @@ export const DeleteFromDetailList =
       },
     };
     try {
-      const response = await api.disbursementApi(body);
-      console.log(response);
-
-      // dispatch({ type: "FETCH_TABLE", payload: dataList });
+      const {
+        data: { rsDeleteDetail },
+      } = await api.disbursementApi(body);
+      console.log(rsDeleteDetail);
+      return rsDeleteDetail;
     } catch (error) {
       console.log(error);
     }

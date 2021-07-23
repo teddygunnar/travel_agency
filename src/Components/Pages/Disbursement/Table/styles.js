@@ -1,13 +1,7 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles((theme) => ({
-  tableBox: {
-    display: "flex",
-    flexDirection: "row",
-    marginTop: "1rem",
-    width: "100%",
-    justifyContent: "space-between",
-  },
+  tableBox: {},
 
   modalContainer: {
     position: "absolute",
@@ -23,5 +17,23 @@ export default makeStyles((theme) => ({
 
   tableContainer: {
     margin: "1rem",
+  },
+
+  iconBox: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "1rem 0px",
+  },
+  iconStyle: {
+    fontSize: 70,
+    color: "cyan",
+    transform: "rotate(90deg)",
+    cursor: "pointer",
+  },
+  "&:hover": {
+    color: "yellow",
   },
 }));

@@ -21,7 +21,6 @@ export const fetchTablePencairanList = (user, session) => async () => {
     const {
       data: { rsList },
     } = await api.TableDataPencairan(body);
-    console.log(rsList);
     return rsList;
     // dispatch({ type: "FETCH_TABLE", payload: dataList });
   } catch (error) {

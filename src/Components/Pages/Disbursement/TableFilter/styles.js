@@ -33,4 +33,15 @@ export default makeStyles((theme) => ({
     justifyContent: "space-around",
     marginBottom: 25,
   },
+  clearBox: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingBottom: 15,
+  },
+
+  btnClear: {
+    width: "25%",
+  },
 }));

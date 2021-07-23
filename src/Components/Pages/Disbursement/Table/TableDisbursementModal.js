@@ -1,5 +1,11 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { Modal, Container, Typography, Grid, Button } from "@material-ui/core";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
+import {
+  Modal,
+  Typography,
+  Button,
+  IconButton,
+  LinearProgress,
+} from "@material-ui/core";
 import useStyles from "./styles";
 import DataTable from "react-data-table-component";
 import { useDispatch } from "react-redux";
@@ -10,6 +16,7 @@ import { listDetail } from "../../../../redux/actionsDisbursement/ListDetail";
 import { AddPoToDetailList } from "../../../../redux/actionsDisbursement/AddPoToDetail";
 import { DeleteFromDetailList } from "../../../../redux/actionsDisbursement/DeleteFromDetail";
 import CustomTableStyle from "./TableStyles/CustomTableStyle";
+import ForwardIcon from "@material-ui/icons/Forward";
 
 function getModalStyle() {
   const top = 50;
@@ -42,6 +49,8 @@ const TableDisbursementModal = ({
   const [listPo, setListPo] = useState([]);
   const [detailList, setDetailList] = useState([]);
   const [selectedRowsData, setSelectedRowsData] = useState([]);
+  const [selectedRowsDataDelete, setSelectedRowsDataDelete] = useState([]);
+  const [clearRows, setClearRows] = useState(false);
   const [render, setRender] = useState(false);
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -53,6 +62,8 @@ const TableDisbursementModal = ({
     if (window.confirm("Are you sure you want to exit?")) {
       setToggleModal(false);
       setDetailList([]);
+      setListPo([]);
+      setDisburseData({ disbNo: 0 });
       console.log("exit");
     } else {
       console.log("not exit");
@@ -76,7 +87,7 @@ const TableDisbursementModal = ({
     cabang,
   } = filter;
 
-  const fetchAPI = async () => {
+  const fetchAPI = useCallback(async () => {
     setListPo(
       await dispatch(
         listOfPo(
@@ -92,20 +103,29 @@ const TableDisbursementModal = ({
         )
       )
     );
-    setDetailList(
-      await dispatch(
-        listDetail(
-          localStorage.getItem("userId"),
-          localStorage.getItem("auth"),
-          disbNo
-        )
+  }, [render, filter, disbNo]);
+
+  const fetchAPIDetail = useCallback(async () => {
+    const action = await dispatch(
+      listDetail(
+        localStorage.getItem("userId"),
+        localStorage.getItem("auth"),
+        disbNo
       )
     );
-  };
+
+    setDetailList(action);
+  }, [render, disbNo]);
 
   useEffect(() => {
     fetchAPI();
-  }, [disburseData, filterData, render]);
+  }, [disburseData, filter, render]);
+
+  useEffect(() => {
+    if (disbNo) {
+      fetchAPIDetail();
+    }
+  }, [render, fetchAPIDetail, disbNo]);
 
   const ListPoColumns = useMemo(
     () => [
@@ -123,7 +143,6 @@ const TableDisbursementModal = ({
         center: true,
         sortable: true,
         compact: true,
-        width: "150px",
       },
       {
         name: "Customer",
@@ -195,7 +214,6 @@ const TableDisbursementModal = ({
         center: true,
         sortable: true,
         compact: true,
-        width: "150px",
       },
       {
         name: "Customer",
@@ -244,15 +262,6 @@ const TableDisbursementModal = ({
             namaCabang: val.BRANCH_NAME,
             totalTagihan: val.TOTAL_TAGIHAN,
           }))),
-      {
-        tglCair: "",
-        rowId: "",
-        poId: "",
-        customer: "",
-        cabang: "",
-        namaCabang: "",
-        totalTagihan: "",
-      },
     ];
   }, [detailList]);
 
@@ -260,95 +269,101 @@ const TableDisbursementModal = ({
     setSelectedRowsData(state.selectedRows);
   };
 
-  console.log(selectedRowsData);
-
-  const addToDetail = () => {
-    selectedRowsData.map((val) => {
-      dispatch(
-        AddPoToDetailList(
-          localStorage.getItem("userId"),
-          localStorage.getItem("auth"),
-          disbNo,
-          val.poId
-        )
-      );
-    });
-    setRender((prev) => !prev);
+  const handleChangeDelete = (state) => {
+    setSelectedRowsDataDelete(state.selectedRows);
   };
 
-  const deleteFrom = () => {
-    selectedRowsData.map((val) => {
-      dispatch(
-        DeleteFromDetailList(
-          localStorage.getItem("userId"),
-          localStorage.getItem("auth"),
-          disbNo,
-          val.rowId
-        )
-      );
+  const addToDetail = () => {
+    if (selectedRowsData.length !== 0) {
+      selectedRowsData.map((val) => {
+        dispatch(
+          AddPoToDetailList(
+            localStorage.getItem("userId"),
+            localStorage.getItem("auth"),
+            disbNo,
+            val.poId
+          )
+        );
+      });
       setRender((prev) => !prev);
-    });
+    } else {
+      alert("You haven't select the data...");
+    }
+  };
+
+  const deleteFromDetail = () => {
+    if (selectedRowsDataDelete.length !== 0) {
+      selectedRowsDataDelete.map((val) => {
+        dispatch(
+          DeleteFromDetailList(
+            localStorage.getItem("userId"),
+            localStorage.getItem("auth"),
+            disbNo,
+            val.rowId
+          )
+        );
+        setRender((prev) => !prev);
+      });
+    } else {
+      alert("You haven't select the data...");
+    }
   };
 
   const body = (
-    <Container style={modalStyle} className={classes.modalContainer}>
+    <div style={modalStyle} className={classes.modalContainer}>
       <Header {...props} />
-      <hr style={{ margin: "2rem" }} />
-
       <Filter {...filterProps} />
       <div className={classes.tableBox}>
-        <DataTable
-          columns={ListPoColumns}
-          data={ListPoData}
-          noHeader
-          dense
-          onSelectedRowsChange={handleChange}
-          customStyles={CustomTableStyle}
-          selectableRows
-          style={{ width: "45%", border: "1px solid rgba(0,0,0,0.2)" }}
-        />
-        <DataTable
-          columns={ListDetailColumns}
-          data={ListDetailData}
-          noHeader
-          dense
-          onSelectedRowsChange={handleChange}
-          noDataComponent={
-            "The data you're searching for is invalid or haven't registered yet"
-          }
-          customStyles={CustomTableStyle}
-          selectableRows
-          style={{ width: "45%", border: "1px solid rgba(0,0,0,0.2)" }}
-        />
+        <div>
+          <Typography variant="body2" color="secondary">
+            List PO
+          </Typography>
+          <DataTable
+            columns={ListPoColumns}
+            data={ListPoData}
+            noHeader
+            onSelectedRowsChange={handleChange}
+            customStyles={CustomTableStyle}
+            selectableRows
+            style={{ border: "1px solid rgba(0,0,0,0.2)" }}
+          />
+        </div>
+        <div className={classes.iconBox}>
+          <IconButton>
+            <ForwardIcon className={classes.iconStyle} onClick={addToDetail} />
+          </IconButton>
+          <IconButton>
+            <ForwardIcon
+              style={{
+                transform: "rotate(-90deg)",
+                color: "red",
+              }}
+              className={classes.iconStyle}
+              onClick={deleteFromDetail}
+            />
+          </IconButton>
+        </div>
+        <div>
+          <Typography variant="body2" color="secondary">
+            List Detail
+          </Typography>
+          <DataTable
+            columns={ListDetailColumns}
+            data={detailList.length === 0 ? "" : ListDetailData}
+            noHeader
+            progressPending={detailList.length === 0 ? true : false}
+            clearSelectedRows={clearRows}
+            onSelectedRowsChange={handleChangeDelete}
+            customStyles={CustomTableStyle}
+            selectableRows
+            style={{ border: "1px solid rgba(0,0,0,0.2)" }}
+          />
+        </div>
       </div>
-      <div
-        style={{
-          marginTop: 15,
-          width: "100%",
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-around",
-          alignCenter: "center",
-        }}
-      >
-        <Button
-          variant="outlined"
-          color="primary"
-          style={{ margin: 5 }}
-          onClick={addToDetail}
-        >
-          Add
-        </Button>
-        <Button
-          variant="outlined"
-          color="secondary"
-          style={{ margin: 5 }}
-          onClick={deleteFrom}
-        >
-          Delete
-        </Button>
-      </div>
-    </Container>
+      <Typography variant="caption" color="secondary">
+        **If loading takes longer than usual, then there is no data in it**
+      </Typography>
+    </div>
   );
 
   return (

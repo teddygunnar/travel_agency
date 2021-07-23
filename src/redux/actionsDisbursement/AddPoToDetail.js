@@ -13,10 +13,12 @@ export const AddPoToDetailList = (user, session, disbNo, poId) => async () => {
     },
   };
   try {
-    const response = await api.disbursementApi(body);
-    console.log(response);
+    const {
+      data: { rsListDetailPO_Add },
+    } = await api.disbursementApi(body);
+    console.log(rsListDetailPO_Add);
 
-    // dispatch({ type: "FETCH_TABLE", payload: dataList });
+    return rsListDetailPO_Add;
   } catch (error) {
     console.log(error);
   }

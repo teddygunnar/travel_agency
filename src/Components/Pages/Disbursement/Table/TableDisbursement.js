@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { Container, Button, Grow } from "@material-ui/core";
+import { Button, Typography, LinearProgress } from "@material-ui/core";
 import { DisbursementList } from "../../../../redux/actionsDisbursement/List";
 import { useDispatch } from "react-redux";
 import DataTable from "react-data-table-component";
@@ -13,6 +13,7 @@ const Table = () => {
   const [disburseData, setDisburseData] = useState([]);
   const [page, setPage] = useState(1);
   const [toggleModal, setToggleModal] = useState(false);
+
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -126,23 +127,32 @@ const Table = () => {
     ];
   }, [fetchedData]);
 
+  console.log(fetchedData);
+
   return (
-    <Container maxWidth="lg" className={classes.tableContainer}>
+    <div className={classes.tableContainer}>
       <Modal {...tableModalProps} />
-      <div className={classes.tableBox}>
-        <DataTable
-          columns={listColumns}
-          data={listData}
-          noHeader
-          customStyles={CustomTableStyle}
-          conditionalRowStyles={CustomRowBackColor}
-          style={{
-            borderLeft: "1px solid rgba(0,0,0,0.2)",
-            borderBottom: "1px solid rgba(0,0,0,0.2)",
-          }}
-        />
-      </div>
-    </Container>
+      <Typography variant="h4" color="primary">
+        Disbursement List
+      </Typography>
+      {fetchedData.length === 0 ? (
+        <LinearProgress />
+      ) : (
+        <div className={classes.tableBox}>
+          <DataTable
+            columns={listColumns}
+            data={listData}
+            noHeader
+            customStyles={CustomTableStyle}
+            conditionalRowStyles={CustomRowBackColor}
+            style={{
+              borderLeft: "1px solid rgba(0,0,0,0.2)",
+              borderBottom: "1px solid rgba(0,0,0,0.2)",
+            }}
+          />
+        </div>
+      )}
+    </div>
   );
 };
 

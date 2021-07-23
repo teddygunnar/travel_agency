@@ -23,7 +23,6 @@ export const listOfPo =
       const {
         data: { rsListDetailPO },
       } = await api.disbursementApi(body);
-      console.log(rsListDetailPO);
       return rsListDetailPO;
       // dispatch({ type: "FETCH_TABLE", payload: dataList });
     } catch (error) {

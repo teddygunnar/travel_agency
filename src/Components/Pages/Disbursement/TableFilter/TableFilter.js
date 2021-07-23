@@ -181,9 +181,16 @@ const TableFilter = ({ setFilter, filter }) => {
             <input name="cabang" value={cabang} onChange={handleInputChange} />
           </Grid>
         </Grid>
-        <Button variant="contained" color="secondary" onClick={clear}>
-          Clear
-        </Button>
+        <div className={classes.clearBox}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={clear}
+            className={classes.btnClear}
+          >
+            Clear
+          </Button>
+        </div>
       </Collapse>
     </div>
   );
