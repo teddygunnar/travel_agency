@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { Button, Typography, LinearProgress } from "@material-ui/core";
+import { Button, Typography, LinearProgress, Grow } from "@material-ui/core";
 import { DisbursementList } from "../../../../redux/actionsDisbursement/List";
 import { useDispatch } from "react-redux";
 import DataTable from "react-data-table-component";
@@ -7,6 +7,8 @@ import CustomTableStyle from "./TableStyles/CustomTableStyle";
 import CustomRowBackColor from "./TableStyles/CustomRowBackColor";
 import useStyles from "./styles";
 import Modal from "./TableDisbursementModal";
+import Pagination from "./Pagination/pagination";
+import Footer from "./Footer/Footer";
 
 const Table = () => {
   const [fetchedData, setFetchedData] = useState([]);
@@ -23,6 +25,19 @@ const Table = () => {
     disburseData,
     setDisburseData,
   };
+
+  const nextPage = () => {
+    setPage((currentPage) => currentPage + 1);
+  };
+  const previousPage = () => {
+    setPage((currentPage) => currentPage - 1);
+  };
+
+  const handleSubmitData = () => {};
+  const handleCancelData = () => {};
+
+  const pageProps = { nextPage, previousPage, page, setPage };
+  const footerProps = { handleCancelData, handleSubmitData };
 
   const fetchAPI = async () => {
     setFetchedData(
@@ -44,7 +59,6 @@ const Table = () => {
     (row) => {
       setToggleModal(true);
       setDisburseData(row);
-      console.log(row);
     },
     [fetchedData]
   );
@@ -127,8 +141,6 @@ const Table = () => {
     ];
   }, [fetchedData]);
 
-  console.log(fetchedData);
-
   return (
     <div className={classes.tableContainer}>
       <Modal {...tableModalProps} />
@@ -138,19 +150,29 @@ const Table = () => {
       {fetchedData.length === 0 ? (
         <LinearProgress />
       ) : (
-        <div className={classes.tableBox}>
-          <DataTable
-            columns={listColumns}
-            data={listData}
-            noHeader
-            customStyles={CustomTableStyle}
-            conditionalRowStyles={CustomRowBackColor}
-            style={{
-              borderLeft: "1px solid rgba(0,0,0,0.2)",
-              borderBottom: "1px solid rgba(0,0,0,0.2)",
-            }}
-          />
-        </div>
+        <Grow in>
+          <div className={classes.tableBox}>
+            <DataTable
+              columns={listColumns}
+              data={listData}
+              noHeader
+              customStyles={CustomTableStyle}
+              conditionalRowStyles={CustomRowBackColor}
+              style={{
+                borderLeft: "1px solid rgba(0,0,0,0.2)",
+                borderBottom: "1px solid rgba(0,0,0,0.2)",
+              }}
+            />
+            <div className={classes.footerBox}>
+              <div className={classes.footer}>
+                <Footer {...footerProps} />
+              </div>
+              <div className={classes.paginationBox}>
+                <Pagination {...pageProps} />
+              </div>
+            </div>
+          </div>
+        </Grow>
       )}
     </div>
   );

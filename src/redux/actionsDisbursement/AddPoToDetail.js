@@ -16,9 +16,7 @@ export const AddPoToDetailList = (user, session, disbNo, poId) => async () => {
     const {
       data: { rsListDetailPO_Add },
     } = await api.disbursementApi(body);
-    console.log(rsListDetailPO_Add);
-
-    return rsListDetailPO_Add;
+    return rsListDetailPO_Add.RESULT_DESC;
   } catch (error) {
     console.log(error);
   }

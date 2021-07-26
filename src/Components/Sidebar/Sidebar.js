@@ -9,23 +9,14 @@ import TreeItem from "@material-ui/lab/TreeItem";
 const Sidebar = ({ addRegisterTab, addPencairanTab, addDisbursementTab }) => {
   return (
     <Paper className={styles.sidebarContainer}>
-      <TreeView
-        defaultCollapseIcon={<ExpandMoreIcon />}
-        defaultExpandIcon={<ChevronRightIcon />}
-      >
-        <TreeItem nodeId="1" label="Menu">
-          <TreeItem nodeId="2" label="Registrasi" onClick={addRegisterTab} />
-          <TreeItem
-            nodeId="3"
-            label="Pencairan Dana"
-            onClick={addPencairanTab}
-          />
-          <TreeItem
-            nodeId="4"
-            label="Disbursement"
-            onClick={addDisbursementTab}
-          />
-        </TreeItem>
+      <TreeView>
+        <TreeItem nodeId="2" label="Registrasi" onClick={addRegisterTab} />
+        <TreeItem nodeId="3" label="Pencairan Dana" onClick={addPencairanTab} />
+        <TreeItem
+          nodeId="4"
+          label="Disbursement"
+          onClick={addDisbursementTab}
+        />
       </TreeView>
     </Paper>
   );

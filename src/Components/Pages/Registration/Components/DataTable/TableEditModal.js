@@ -61,8 +61,6 @@ const EditModal = ({
     PASSANGER_BANK_BRANCH,
   } = editData;
 
-  console.log(editData);
-
   useEffect(() => {
     const fetchAPI = async () => {
       setBranch(

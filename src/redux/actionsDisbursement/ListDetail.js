@@ -14,7 +14,6 @@ export const listDetail = (user, session, disbNo) => async () => {
     const {
       data: { rsListDetail },
     } = await api.disbursementApi(body);
-    console.log(rsListDetail);
     return rsListDetail;
     // dispatch({ type: "FETCH_TABLE", payload: dataList });
   } catch (error) {

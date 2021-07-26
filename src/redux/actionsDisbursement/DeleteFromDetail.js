@@ -16,8 +16,7 @@ export const DeleteFromDetailList =
       const {
         data: { rsDeleteDetail },
       } = await api.disbursementApi(body);
-      console.log(rsDeleteDetail);
-      return rsDeleteDetail;
+      return rsDeleteDetail.RESULT_DESC;
     } catch (error) {
       console.log(error);
     }

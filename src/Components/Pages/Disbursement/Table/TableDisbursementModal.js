@@ -50,7 +50,7 @@ const TableDisbursementModal = ({
   const [detailList, setDetailList] = useState([]);
   const [selectedRowsData, setSelectedRowsData] = useState([]);
   const [selectedRowsDataDelete, setSelectedRowsDataDelete] = useState([]);
-  const [clearRows, setClearRows] = useState(false);
+  const [status, setStatus] = useState();
   const [render, setRender] = useState(false);
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -64,9 +64,6 @@ const TableDisbursementModal = ({
       setDetailList([]);
       setListPo([]);
       setDisburseData({ disbNo: 0 });
-      console.log("exit");
-    } else {
-      console.log("not exit");
     }
   };
   const filterProps = {
@@ -86,6 +83,46 @@ const TableDisbursementModal = ({
     customer,
     cabang,
   } = filter;
+
+  const addToDetail = useCallback(async () => {
+    if (selectedRowsData.length !== 0) {
+      selectedRowsData.map(async (val) => {
+        setStatus(
+          await dispatch(
+            AddPoToDetailList(
+              localStorage.getItem("userId"),
+              localStorage.getItem("auth"),
+              disbNo,
+              val.poId
+            )
+          )
+        );
+      });
+      setRender((prev) => !prev);
+    } else {
+      alert("You haven't select the data...");
+    }
+  }, [selectedRowsData]);
+
+  const deleteFromDetail = useCallback(async () => {
+    if (selectedRowsDataDelete.length !== 0) {
+      selectedRowsDataDelete.map(async (val) => {
+        setStatus(
+          await dispatch(
+            DeleteFromDetailList(
+              localStorage.getItem("userId"),
+              localStorage.getItem("auth"),
+              disbNo,
+              val.rowId
+            )
+          )
+        );
+        setRender((prev) => !prev);
+      });
+    } else {
+      alert("You haven't select the data...");
+    }
+  }, [selectedRowsDataDelete]);
 
   const fetchAPI = useCallback(async () => {
     setListPo(
@@ -118,14 +155,21 @@ const TableDisbursementModal = ({
   }, [render, disbNo]);
 
   useEffect(() => {
+    if (status === "SUCCESS") {
+      setRender((prev) => !prev);
+      setStatus("");
+    }
+  }, [status]);
+
+  useEffect(() => {
     fetchAPI();
-  }, [disburseData, filter, render]);
+  }, [disburseData, filter, render, status]);
 
   useEffect(() => {
     if (disbNo) {
       fetchAPIDetail();
     }
-  }, [render, fetchAPIDetail, disbNo]);
+  }, [fetchAPIDetail, disbNo, render, status]);
 
   const ListPoColumns = useMemo(
     () => [
@@ -273,42 +317,6 @@ const TableDisbursementModal = ({
     setSelectedRowsDataDelete(state.selectedRows);
   };
 
-  const addToDetail = () => {
-    if (selectedRowsData.length !== 0) {
-      selectedRowsData.map((val) => {
-        dispatch(
-          AddPoToDetailList(
-            localStorage.getItem("userId"),
-            localStorage.getItem("auth"),
-            disbNo,
-            val.poId
-          )
-        );
-      });
-      setRender((prev) => !prev);
-    } else {
-      alert("You haven't select the data...");
-    }
-  };
-
-  const deleteFromDetail = () => {
-    if (selectedRowsDataDelete.length !== 0) {
-      selectedRowsDataDelete.map((val) => {
-        dispatch(
-          DeleteFromDetailList(
-            localStorage.getItem("userId"),
-            localStorage.getItem("auth"),
-            disbNo,
-            val.rowId
-          )
-        );
-        setRender((prev) => !prev);
-      });
-    } else {
-      alert("You haven't select the data...");
-    }
-  };
-
   const body = (
     <div style={modalStyle} className={classes.modalContainer}>
       <Header {...props} />
@@ -351,11 +359,10 @@ const TableDisbursementModal = ({
             columns={ListDetailColumns}
             data={detailList.length === 0 ? "" : ListDetailData}
             noHeader
-            progressPending={detailList.length === 0 ? true : false}
-            clearSelectedRows={clearRows}
             onSelectedRowsChange={handleChangeDelete}
             customStyles={CustomTableStyle}
             selectableRows
+            noDataComponent="The data you're searching for is invalid or haven't registered yet"
             style={{ border: "1px solid rgba(0,0,0,0.2)" }}
           />
         </div>

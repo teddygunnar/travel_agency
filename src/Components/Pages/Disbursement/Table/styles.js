@@ -1,7 +1,9 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles((theme) => ({
-  tableBox: {},
+  tableBox: {
+    marginTop: "1rem",
+  },
 
   modalContainer: {
     position: "absolute",
@@ -35,5 +37,22 @@ export default makeStyles((theme) => ({
   },
   "&:hover": {
     color: "yellow",
+  },
+
+  paginationBox: {
+    width: "100%%",
+  },
+
+  footer: {
+    width: "75%",
+  },
+
+  footerBox: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: "0.5rem",
   },
 }));
