@@ -57,8 +57,11 @@ const Header = ({
   useEffect(() => {
     if (status === "SUCCESS") {
       setRender((prev) => !prev);
+      setStatus("")
     }
-  }, [render]);
+  }, [render, status]);
+
+console.log(render)
 
   const batchOptions = listBatch.map((val, i) => ({
     key: i,
