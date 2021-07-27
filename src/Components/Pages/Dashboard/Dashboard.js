@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Navbar, Sidebar, Registration, Pencairan, Disbursement } from "../../";
+import { Navbar, Sidebar, Registration, Pencairan, Disbursement, Reporting } from "../../";
 import { Grow } from "@material-ui/core";
 import { BrowserTabs } from "react-browser-tabs";
 import styles from "./Dashboard.module.css";
@@ -38,6 +38,19 @@ const Dashboard = ({ setIsAuth }) => {
     ]);
   };
 
+  const addReportingTab = () => {
+    activeTab[1](tabs[0].length);
+    tabs[1]([
+      ...tabs[0],
+      {
+        title: "Reporting",
+        url: "stackoverflow.com",
+        id: "tab4",
+        content: () => <Reporting />,
+      },
+    ]);
+  }
+
   const addPencairanTab = () => {
     activeTab[1](tabs[0].length);
     tabs[1]([
@@ -68,7 +81,7 @@ const Dashboard = ({ setIsAuth }) => {
   //   activeTab[1](tabs[1].length);
   // };
 
-  const tabProps = { addPencairanTab, addRegisterTab, addDisbursementTab };
+  const tabProps = { addPencairanTab, addRegisterTab, addDisbursementTab, addReportingTab };
 
   return (
     <div className={styles.dashboard}>

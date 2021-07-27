@@ -18,7 +18,6 @@ import withReactContent from "sweetalert2-react-content";
 
 const Navbar = ({ setIsAuth }) => {
   const [useranchorel, setuseranchorel] = useState(null);
-  const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const [user, setUser] = useState(localStorage.getItem("userId"));
 
   const classes = useStyles();
@@ -31,15 +30,6 @@ const Navbar = ({ setIsAuth }) => {
   const handleCloseUser = () => {
     setuseranchorel(null);
   };
-
-  //Breakdown company list
-  const handleClickMenu = (event) => {
-    setMenuAnchorEl(event.currentTarget);
-  };
-
-  // const handleCloseMenu = (e) => {
-  //   setMenuAnchorEl(null);
-  // };
 
   const MySwal = withReactContent(Swal);
 
@@ -69,23 +59,8 @@ const Navbar = ({ setIsAuth }) => {
         Travel Agency
       </Typography>
       <Toolbar className={styles.toolBar}>
-        <IconButton onClick={handleClickMenu} style={{ borderRadius: 5 }}>
-          <Settings
-            style={{
-              color: "#3f63f5",
-            }}
-          />
-        </IconButton>
-        <Menu
-          anchorEl={menuAnchorEl}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-          transformOrigin={{ vertical: "top", horizontal: "right" }}
-          open={Boolean(menuAnchorEl)}
-          onClose={() => setMenuAnchorEl(null)}
-        >
-          <MenuItem>TEST1</MenuItem>
-          <MenuItem>TEST2</MenuItem>
-        </Menu>
+      
+     
         <Button
           className={styles.userBox}
           onClick={handleClickUser}

@@ -45,3 +45,7 @@ export const addDetailPencairan = (body) =>
 
 export const disbursementApi = (body) =>
   request.post("/TRAVEL/disbursement", body);
+
+
+//API REPORTING
+export const reportingApi = (body) => request.post("/TRAVEL/po_report", body)

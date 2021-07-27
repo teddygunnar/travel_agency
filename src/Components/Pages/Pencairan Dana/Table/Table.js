@@ -13,7 +13,7 @@ import DataTable from "react-data-table-component";
 import CustomTableStyle from "./TableStyles/CustomTableStyle";
 import CustomRowBackColor from "./TableStyles/CustomRowBackColor";
 
-const Table = ({ fetchedData, fetchedDataList, setRender }) => {
+const Table = ({ fetchedData, fetchedDataList, setRender, render }) => {
   const classes = useStyles();
   const [switchMode, setSwitchMode] = useState(false);
   const [editData, setEditData] = useState([]);
@@ -270,8 +270,6 @@ const Table = ({ fetchedData, fetchedDataList, setRender }) => {
   const handleChange = (state) => {
     setSelectedRowsData(state.selectedRows);
   };
-
-  console.log(selectedRowsData);
 
   const contextActions = useMemo(() => {
     const handleDelete = () => {};

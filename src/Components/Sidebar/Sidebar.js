@@ -2,11 +2,9 @@ import React from "react";
 import { Paper } from "@material-ui/core";
 import styles from "./Sidebar.module.css";
 import TreeView from "@material-ui/lab/TreeView";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import TreeItem from "@material-ui/lab/TreeItem";
 
-const Sidebar = ({ addRegisterTab, addPencairanTab, addDisbursementTab }) => {
+const Sidebar = ({ addRegisterTab, addPencairanTab, addDisbursementTab, addReportingTab }) => {
   return (
     <Paper className={styles.sidebarContainer}>
       <TreeView>
@@ -16,6 +14,11 @@ const Sidebar = ({ addRegisterTab, addPencairanTab, addDisbursementTab }) => {
           nodeId="4"
           label="Disbursement"
           onClick={addDisbursementTab}
+        />
+        <TreeItem
+          nodeId="5"
+          label="Reporting"
+          onClick={addReportingTab}
         />
       </TreeView>
     </Paper>
