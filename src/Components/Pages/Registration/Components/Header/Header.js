@@ -41,7 +41,9 @@ const TableHeader = ({ filterVal, setFilterVal, filterCol, setFilterCol }) => {
   return (
     <div className={styles.mainContainer}>
       <div className={styles.containerHeader}>
-        <Typography variant="h4">List Registrasi</Typography>
+        <Typography variant="h4" color="primary">
+          List Registrasi
+        </Typography>
         <div className={styles.contHeaderRight}>
           <div className={styles.searchBar}>
             <div className={styles.searchIcon}>

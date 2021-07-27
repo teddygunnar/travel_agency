@@ -21,7 +21,7 @@ export const addPencairan =
         data: { rsAdd },
       } = await api.addDataPencairan(body);
       console.log(rsAdd);
-      return rsAdd;
+      return rsAdd.RESULT_DESC;
       // dispatch({ type: "FETCH_TABLE", payload: dataList });
     } catch (error) {
       console.log(error);

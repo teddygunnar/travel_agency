@@ -16,9 +16,16 @@ import { fetchBatchList } from "../../../../redux/actions/getBatchList";
 import { addPencairan } from "../../../../redux/actionsPencairan/AddDataPencairan";
 import CountUp from "react-countup";
 
-const Header = ({ formPencairan, setFormPencairan, fetchedData }) => {
+const Header = ({
+  formPencairan,
+  setFormPencairan,
+  fetchedData,
+  render,
+  setRender,
+}) => {
   const [listBank, setListBank] = useState([]);
   const [listBatch, setListBatch] = useState([]);
+  const [status, setStatus] = useState("");
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -47,6 +54,12 @@ const Header = ({ formPencairan, setFormPencairan, fetchedData }) => {
     fetchAPI();
   }, []);
 
+  useEffect(() => {
+    if (status === "SUCCESS") {
+      setRender((prev) => !prev);
+    }
+  }, [render]);
+
   const batchOptions = listBatch.map((val, i) => ({
     key: i,
     text: val.MASTER_NAME,
@@ -67,18 +80,20 @@ const Header = ({ formPencairan, setFormPencairan, fetchedData }) => {
     setFormPencairan({ ...formPencairan, [data.name]: data.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (bank) {
-      dispatch(
-        addPencairan(
-          localStorage.getItem("userId"),
-          localStorage.getItem("auth"),
-          tglPencairan,
-          batchPencairan,
-          jam,
-          bank,
-          note
+      setStatus(
+        await dispatch(
+          addPencairan(
+            localStorage.getItem("userId"),
+            localStorage.getItem("auth"),
+            tglPencairan,
+            batchPencairan,
+            jam,
+            bank,
+            note
+          )
         )
       );
     } else {
@@ -92,6 +107,8 @@ const Header = ({ formPencairan, setFormPencairan, fetchedData }) => {
   );
 
   const totalPo = fetchedData.length;
+
+  console.log(status);
 
   return (
     <Container maxWidth="lg" className={classes.container}>

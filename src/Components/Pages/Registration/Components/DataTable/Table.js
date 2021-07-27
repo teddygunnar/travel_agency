@@ -20,6 +20,7 @@ const Table = () => {
   const [fetchedData, setFetchedData] = useState([]);
   const [toggleModal, setToggleModal] = useState(false);
   const [selectedRowsData, setSelectedRowsData] = useState([]);
+  const [pending, setPending] = useState(true);
   const [editData, setEditData] = useState([]);
   const [render, setRender] = useState(false);
   const [filterVal, setFilterVal] = useState("");
@@ -54,21 +55,26 @@ const Table = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchAPI = async () => {
-      setFetchedData(
-        await dispatch(
-          fetchTableList(
-            localStorage.getItem("userId"),
-            localStorage.getItem("auth"),
-            page,
-            filterCol,
-            filterVal
-          )
+  const fetchAPI = async () => {
+    setFetchedData(
+      await dispatch(
+        fetchTableList(
+          localStorage.getItem("userId"),
+          localStorage.getItem("auth"),
+          page,
+          filterCol,
+          filterVal
         )
-      );
-    };
+      )
+    );
+  };
+
+  useEffect(() => {
     fetchAPI();
+    const timeout = setTimeout(() => {
+      setPending(false);
+    }, 2000);
+    return () => clearTimeout(timeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterVal, filterCol, render, page, dispatch, deleteDataList]);
 
@@ -338,14 +344,10 @@ const Table = () => {
             selectableRows
             contextActions={contextActions}
             selectableRowsComponent={Checkbox}
+            progressPending={pending}
             selectableRowsComponentProps={checkBoxProps}
             onSelectedRowsChange={handleChange}
             noHeader={!selectedRowsData.length ? true : false}
-            noDataComponent={
-              !fetchedData
-                ? "The data you're searching for is invalid or haven't registered yet"
-                : "Fetching data, please wait..."
-            }
             selectableRowsHighlight
             customStyles={CustomTableStyle}
             conditionalRowStyles={CustomRowBackColor}

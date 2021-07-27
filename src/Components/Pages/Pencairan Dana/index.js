@@ -56,6 +56,7 @@ const Index = () => {
     fetchedData,
     fetchedDataList,
     setRender,
+    render,
   };
 
   return (
